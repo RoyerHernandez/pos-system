@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+bower_components/
+vendor/
+
+# Environment & credentials
+.env
+*.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+error_log
+
+# Uploads (user-generated content)
+pos/vistas/img/usuarios/*
+!pos/vistas/img/usuarios/.gitkeep
+pos/vistas/img/productos/*
+!pos/vistas/img/productos/.gitkeep
+
+# Unused alternate folders
+pos/view/
+pos/controller/
+pos/model/
+pos/ajax/
+pos/extensions/
+pos/extensiones/
+
+# Lock files
+package-lock.json
+yarn.lock
+composer.lock
