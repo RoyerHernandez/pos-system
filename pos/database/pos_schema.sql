@@ -74,6 +74,7 @@ CREATE TABLE clientes (
   direccion VARCHAR(255) DEFAULT NULL,
   fecha_nacimiento DATE DEFAULT NULL,
   total_compras DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  estado TINYINT(1) NOT NULL DEFAULT 1,
   fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
@@ -138,7 +139,7 @@ CREATE INDEX idx_clientes_documento ON clientes(documento);
 
 -- Usuario administrador (password: admin123)
 INSERT INTO usuarios (usuario, password, nombre, perfil, estado)
-VALUES ('admin', '$2y$10$8K1p/a0dR1Lx5kEYwFGcSOeW5M5g3GN3vKb7pESxbKg1bLqMKxGzG', 'Administrador del Sistema', 'Administrador', 1);
+VALUES ('admin', '$2y$12$0FTpJzLnCtLjz0SQ1r1h6OwqYAEnbEG0C.LHijJ4pEYnewrWPqmNi', 'Administrador del Sistema', 'Administrador', 1);
 
 -- Categorias de ejemplo
 INSERT INTO categorias (nombre, descripcion) VALUES
