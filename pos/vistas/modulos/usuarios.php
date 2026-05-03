@@ -1,6 +1,6 @@
 <?php
 
-$usuarios = ControladorUsuarios::ctrMostrarUsuarios(null, null);
+$users = UserController::ctrShowUsers(null, null);
 
 ?>
 
@@ -52,34 +52,34 @@ $usuarios = ControladorUsuarios::ctrMostrarUsuarios(null, null);
 
             <?php
 
-            $contador = 1;
+            $counter = 1;
 
-            foreach($usuarios as $key => $valor){
+            foreach($users as $key => $value){
 
               echo '<tr>
 
-                <td>'.$contador.'</td>
-                <td>'.$valor["nombre"].'</td>
-                <td>'.$valor["usuario"].'</td>
-                <td><img src="'.(!empty($valor["foto"]) ? $valor["foto"] : 'vistas/img/usuarios/default/anonymous.png').'" class="img-thumbnail" width="40px"></td>
-                <td>'.$valor["perfil"].'</td>
+                <td>'.$counter.'</td>
+                <td>'.$value["nombre"].'</td>
+                <td>'.$value["usuario"].'</td>
+                <td><img src="'.(!empty($value["foto"]) ? $value["foto"] : 'vistas/img/usuarios/default/anonymous.png').'" class="img-thumbnail" width="40px"></td>
+                <td>'.$value["perfil"].'</td>
                 <td>';
 
-              if($valor["estado"] == 1){
+              if($value["estado"] == 1){
                 echo '<button class="btn btn-success btn-xs">Activado</button>';
               }else{
                 echo '<button class="btn btn-danger btn-xs">Inactivo</button>';
               }
 
               echo '</td>
-                <td>'.$valor["ultimo_login"].'</td>
+                <td>'.$value["ultimo_login"].'</td>
                 <td>
 
                   <div class="btn-group">
 
-                    <button class="btn btn-warning btnEditarUsuario" data-toggle="modal" data-target="#modalEditarUsuario" idUsuario="'.$valor["id"].'" ><i class="fa fa-pencil"></i></button>
+                    <button class="btn btn-warning btnEditarUsuario" data-toggle="modal" data-target="#modalEditarUsuario" idUsuario="'.$value["id"].'" ><i class="fa fa-pencil"></i></button>
 
-                    <a class="btn btn-danger btnEliminarUsuario" idUsuario="'.$valor["id"].'" usuario="'.$valor["usuario"].'"><i class="fa fa-times"></i></a>
+                    <a class="btn btn-danger btnEliminarUsuario" idUsuario="'.$value["id"].'" usuario="'.$value["usuario"].'"><i class="fa fa-times"></i></a>
 
                   </div>
 
@@ -87,7 +87,7 @@ $usuarios = ControladorUsuarios::ctrMostrarUsuarios(null, null);
 
               </tr>';
 
-              $contador++;
+              $counter++;
 
             }
 
@@ -106,7 +106,7 @@ $usuarios = ControladorUsuarios::ctrMostrarUsuarios(null, null);
 </div>
 
 <!--=====================================
-MODAL AGREGAR USUARIO
+ADD USER MODAL
 ======================================-->
 
 <div class="modal fade" id="modalAgregarUsuario">
@@ -124,7 +124,7 @@ MODAL AGREGAR USUARIO
 
               <div class="box-body">
 
-                <!--ENTRADA PARA EL NOMBRE-->
+                <!-- NAME INPUT -->
 
                   <div class="form-group">
                     <div class="input-group">
@@ -133,7 +133,7 @@ MODAL AGREGAR USUARIO
                     </div>
                   </div>
 
-                  <!--ENTRADA PARA EL USUARIO-->
+                  <!-- USERNAME INPUT -->
 
                   <div class="form-group">
                     <div class="input-group">
@@ -142,7 +142,7 @@ MODAL AGREGAR USUARIO
                     </div>
                   </div>
 
-                  <!--ENTRADA PARA LA CONTRASEÑA-->
+                  <!-- PASSWORD INPUT -->
 
                   <div class="form-group">
                     <div class="input-group">
@@ -151,7 +151,7 @@ MODAL AGREGAR USUARIO
                     </div>
                   </div>
 
-                  <!--ENTRADA PARA SELECCIONAR PERFIL-->
+                  <!-- PROFILE SELECTION INPUT -->
 
                   <div class="form-group">
                     <div class="input-group">
@@ -165,7 +165,7 @@ MODAL AGREGAR USUARIO
                     </div>
                   </div>
 
-                  <!--ENTRADA PARA SUBIR FOTO-->
+                  <!-- PHOTO UPLOAD INPUT -->
 
                   <div class="form-group">
 
@@ -198,7 +198,7 @@ MODAL AGREGAR USUARIO
 </div>
 
 <!--=====================================
-MODAL EDITAR USUARIO
+EDIT USER MODAL
 ======================================-->
 
 <div class="modal fade" id="modalEditarUsuario">
@@ -216,7 +216,7 @@ MODAL EDITAR USUARIO
 
               <div class="box-body">
 
-                <!--ENTRADA PARA EL NOMBRE-->
+                <!-- NAME INPUT -->
 
                   <div class="form-group">
                     <div class="input-group">
@@ -225,7 +225,7 @@ MODAL EDITAR USUARIO
                     </div>
                   </div>
 
-                  <!--ENTRADA PARA EL USUARIO (solo lectura)-->
+                  <!-- USERNAME INPUT (read-only) -->
 
                   <div class="form-group">
                     <div class="input-group">
@@ -234,7 +234,7 @@ MODAL EDITAR USUARIO
                     </div>
                   </div>
 
-                  <!--ENTRADA PARA LA CONTRASEÑA-->
+                  <!-- PASSWORD INPUT -->
 
                   <div class="form-group">
                     <div class="input-group">
@@ -245,7 +245,7 @@ MODAL EDITAR USUARIO
 
                   <input type="hidden" name="passwordActual" id="passwordActual">
 
-                  <!--ENTRADA PARA SELECCIONAR PERFIL-->
+                  <!-- PROFILE SELECTION INPUT -->
 
                   <div class="form-group">
                     <div class="input-group">
@@ -258,7 +258,7 @@ MODAL EDITAR USUARIO
                     </div>
                   </div>
 
-                  <!--ENTRADA PARA SUBIR FOTO-->
+                  <!-- PHOTO UPLOAD INPUT -->
 
                   <div class="form-group">
 
@@ -294,21 +294,21 @@ MODAL EDITAR USUARIO
 
 <?php
 
-$crearUsuario = new ControladorUsuarios();
-$crearUsuario -> ctrCrearUsuario();
+$createUser = new UserController();
+$createUser -> ctrCreateUser();
 
-$editarUsuario = new ControladorUsuarios();
-$editarUsuario -> ctrEditarUsuario();
+$updateUser = new UserController();
+$updateUser -> ctrUpdateUser();
 
-$borrarUsuario = new ControladorUsuarios();
-$borrarUsuario -> ctrBorrarUsuario();
+$deleteUser = new UserController();
+$deleteUser -> ctrDeleteUser();
 
 ?>
 
 <script>
 
 /*=============================================
-EDITAR USUARIO - Cargar datos en modal
+EDIT USER - Load data into modal
 =============================================*/
 
 $(".tablas").on("click", ".btnEditarUsuario", function(){
@@ -348,7 +348,7 @@ $(".tablas").on("click", ".btnEditarUsuario", function(){
 });
 
 /*=============================================
-ELIMINAR USUARIO
+DELETE USER
 =============================================*/
 
 $(".tablas").on("click", ".btnEliminarUsuario", function(){
@@ -380,7 +380,7 @@ $(".tablas").on("click", ".btnEliminarUsuario", function(){
 });
 
 /*=============================================
-PREVIEW DE IMAGEN AL SELECCIONAR
+IMAGE PREVIEW ON SELECTION
 =============================================*/
 
 $(".nuevaFoto").change(function(){

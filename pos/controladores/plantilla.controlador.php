@@ -1,12 +1,12 @@
 <?php
 
-class ControladorPlantilla{
+class TemplateController{
 
-	static public function ctrPlantilla(){
+	static public function ctrTemplate(){
 
 		include "vistas/plantilla.php";
 
-	}	
+	}
 
 
 }

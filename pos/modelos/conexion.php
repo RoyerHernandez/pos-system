@@ -1,8 +1,8 @@
 <?php
 
-class Conexion{
+class Connection{
 
-	static public function conectar(){
+	static public function connect(){
 
 		$host = getenv('DB_HOST') ?: 'localhost';
 		$dbname = getenv('DB_NAME') ?: 'pos';

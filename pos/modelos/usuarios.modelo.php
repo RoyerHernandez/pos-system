@@ -2,19 +2,19 @@
 
 require_once "conexion.php";
 
-class ModeloUsuarios{
+class UserModel{
 
 	/*=============================================
-	MOSTRAR USUARIOS
+	SHOW USERS
 	=============================================*/
 
-	static public function mdlMostrarUsuarios($tabla, $item, $valor){
+	static public function mdlShowUsers($table, $item, $value){
 
 		if($item != null){
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
+			$stmt = Connection::connect()->prepare("SELECT * FROM $table WHERE $item = :$item");
 
-			$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
+			$stmt -> bindParam(":".$item, $value, PDO::PARAM_STR);
 
 			$stmt -> execute();
 
@@ -22,7 +22,7 @@ class ModeloUsuarios{
 
 		}else{
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
+			$stmt = Connection::connect()->prepare("SELECT * FROM $table");
 
 			$stmt -> execute();
 
@@ -33,18 +33,18 @@ class ModeloUsuarios{
 	}
 
 	/*=============================================
-	INGRESAR USUARIO
+	INSERT USER
 	=============================================*/
 
-	static public function mdlIngresarUsuario($tabla, $datos){
+	static public function mdlInsertUser($table, $data){
 
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(nombre, usuario, password, perfil, foto) VALUES (:nombre, :usuario, :password, :perfil, :foto)");
+		$stmt = Connection::connect()->prepare("INSERT INTO $table(nombre, usuario, password, perfil, foto) VALUES (:nombre, :usuario, :password, :perfil, :foto)");
 
-		$stmt -> bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
-		$stmt -> bindParam(":usuario", $datos["usuario"], PDO::PARAM_STR);
-		$stmt -> bindParam(":password", $datos["password"], PDO::PARAM_STR);
-		$stmt -> bindParam(":perfil", $datos["perfil"], PDO::PARAM_STR);
-		$stmt -> bindParam(":foto", $datos["foto"], PDO::PARAM_STR);
+		$stmt -> bindParam(":nombre", $data["nombre"], PDO::PARAM_STR);
+		$stmt -> bindParam(":usuario", $data["usuario"], PDO::PARAM_STR);
+		$stmt -> bindParam(":password", $data["password"], PDO::PARAM_STR);
+		$stmt -> bindParam(":perfil", $data["perfil"], PDO::PARAM_STR);
+		$stmt -> bindParam(":foto", $data["foto"], PDO::PARAM_STR);
 
 		if($stmt -> execute()){
 
@@ -59,18 +59,18 @@ class ModeloUsuarios{
 	}
 
 	/*=============================================
-	EDITAR USUARIO
+	UPDATE USER
 	=============================================*/
 
-	static public function mdlEditarUsuario($tabla, $datos){
+	static public function mdlUpdateUser($table, $data){
 
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre = :nombre, password = :password, perfil = :perfil, foto = :foto WHERE usuario = :usuario");
+		$stmt = Connection::connect()->prepare("UPDATE $table SET nombre = :nombre, password = :password, perfil = :perfil, foto = :foto WHERE usuario = :usuario");
 
-		$stmt -> bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
-		$stmt -> bindParam(":usuario", $datos["usuario"], PDO::PARAM_STR);
-		$stmt -> bindParam(":password", $datos["password"], PDO::PARAM_STR);
-		$stmt -> bindParam(":perfil", $datos["perfil"], PDO::PARAM_STR);
-		$stmt -> bindParam(":foto", $datos["foto"], PDO::PARAM_STR);
+		$stmt -> bindParam(":nombre", $data["nombre"], PDO::PARAM_STR);
+		$stmt -> bindParam(":usuario", $data["usuario"], PDO::PARAM_STR);
+		$stmt -> bindParam(":password", $data["password"], PDO::PARAM_STR);
+		$stmt -> bindParam(":perfil", $data["perfil"], PDO::PARAM_STR);
+		$stmt -> bindParam(":foto", $data["foto"], PDO::PARAM_STR);
 
 		if($stmt -> execute()){
 
@@ -85,15 +85,15 @@ class ModeloUsuarios{
 	}
 
 	/*=============================================
-	BORRAR USUARIO (soft delete)
+	DELETE USER (soft delete)
 	=============================================*/
 
-	static public function mdlBorrarUsuario($tabla, $datos){
+	static public function mdlDeleteUser($table, $data){
 
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET estado = :estado WHERE id = :id");
+		$stmt = Connection::connect()->prepare("UPDATE $table SET estado = :estado WHERE id = :id");
 
-		$stmt -> bindParam(":estado", $datos["estado"], PDO::PARAM_INT);
-		$stmt -> bindParam(":id", $datos["id"], PDO::PARAM_INT);
+		$stmt -> bindParam(":estado", $data["estado"], PDO::PARAM_INT);
+		$stmt -> bindParam(":id", $data["id"], PDO::PARAM_INT);
 
 		if($stmt -> execute()){
 
@@ -108,12 +108,12 @@ class ModeloUsuarios{
 	}
 
 	/*=============================================
-	ACTUALIZAR ULTIMO LOGIN
+	UPDATE LAST LOGIN
 	=============================================*/
 
-	static public function mdlActualizarLogin($tabla, $id){
+	static public function mdlUpdateLastLogin($table, $id){
 
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET ultimo_login = NOW() WHERE id = :id");
+		$stmt = Connection::connect()->prepare("UPDATE $table SET ultimo_login = NOW() WHERE id = :id");
 
 		$stmt -> bindParam(":id", $id, PDO::PARAM_INT);
 

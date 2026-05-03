@@ -2,19 +2,19 @@
 
 require_once "conexion.php";
 
-class ModeloCategorias{
+class CategoryModel{
 
 	/*=============================================
-	MOSTRAR CATEGORIAS
+	SHOW CATEGORIES
 	=============================================*/
 
-	static public function mdlMostrarCategorias($tabla, $item, $valor){
+	static public function mdlShowCategories($table, $item, $value){
 
 		if($item != null){
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
+			$stmt = Connection::connect()->prepare("SELECT * FROM $table WHERE $item = :$item");
 
-			$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
+			$stmt -> bindParam(":".$item, $value, PDO::PARAM_STR);
 
 			$stmt -> execute();
 
@@ -22,7 +22,7 @@ class ModeloCategorias{
 
 		}else{
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
+			$stmt = Connection::connect()->prepare("SELECT * FROM $table");
 
 			$stmt -> execute();
 
@@ -33,15 +33,15 @@ class ModeloCategorias{
 	}
 
 	/*=============================================
-	INGRESAR CATEGORIA
+	INSERT CATEGORY
 	=============================================*/
 
-	static public function mdlIngresarCategoria($tabla, $datos){
+	static public function mdlInsertCategory($table, $data){
 
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(nombre, descripcion) VALUES (:nombre, :descripcion)");
+		$stmt = Connection::connect()->prepare("INSERT INTO $table(nombre, descripcion) VALUES (:nombre, :descripcion)");
 
-		$stmt -> bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
-		$stmt -> bindParam(":descripcion", $datos["descripcion"], PDO::PARAM_STR);
+		$stmt -> bindParam(":nombre", $data["nombre"], PDO::PARAM_STR);
+		$stmt -> bindParam(":descripcion", $data["descripcion"], PDO::PARAM_STR);
 
 		if($stmt -> execute()){
 
@@ -56,16 +56,16 @@ class ModeloCategorias{
 	}
 
 	/*=============================================
-	EDITAR CATEGORIA
+	UPDATE CATEGORY
 	=============================================*/
 
-	static public function mdlEditarCategoria($tabla, $datos){
+	static public function mdlUpdateCategory($table, $data){
 
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre = :nombre, descripcion = :descripcion WHERE id = :id");
+		$stmt = Connection::connect()->prepare("UPDATE $table SET nombre = :nombre, descripcion = :descripcion WHERE id = :id");
 
-		$stmt -> bindParam(":id", $datos["id"], PDO::PARAM_INT);
-		$stmt -> bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
-		$stmt -> bindParam(":descripcion", $datos["descripcion"], PDO::PARAM_STR);
+		$stmt -> bindParam(":id", $data["id"], PDO::PARAM_INT);
+		$stmt -> bindParam(":nombre", $data["nombre"], PDO::PARAM_STR);
+		$stmt -> bindParam(":descripcion", $data["descripcion"], PDO::PARAM_STR);
 
 		if($stmt -> execute()){
 
@@ -80,15 +80,15 @@ class ModeloCategorias{
 	}
 
 	/*=============================================
-	BORRAR CATEGORIA (soft delete)
+	DELETE CATEGORY (soft delete)
 	=============================================*/
 
-	static public function mdlBorrarCategoria($tabla, $datos){
+	static public function mdlDeleteCategory($table, $data){
 
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET estado = :estado WHERE id = :id");
+		$stmt = Connection::connect()->prepare("UPDATE $table SET estado = :estado WHERE id = :id");
 
-		$stmt -> bindParam(":id", $datos["id"], PDO::PARAM_INT);
-		$stmt -> bindParam(":estado", $datos["estado"], PDO::PARAM_INT);
+		$stmt -> bindParam(":id", $data["id"], PDO::PARAM_INT);
+		$stmt -> bindParam(":estado", $data["estado"], PDO::PARAM_INT);
 
 		if($stmt -> execute()){
 
