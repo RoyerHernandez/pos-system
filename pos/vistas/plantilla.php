@@ -19,7 +19,7 @@ session_start();
   <link rel="icon" href="vistas/img/plantilla/icono-negro.png">
 
    <!--=====================================
-  PLUGINS DE CSS
+  CSS PLUGINS
   ======================================-->
 
   <!-- Bootstrap 3.3.7 -->
@@ -33,7 +33,7 @@ session_start();
 
   <!-- Theme style -->
   <link rel="stylesheet" href="vistas/dist/css/AdminLTE.css">
-  
+
   <!-- AdminLTE Skins -->
   <link rel="stylesheet" href="vistas/dist/css/skins/_all-skins.min.css">
 
@@ -45,18 +45,18 @@ session_start();
   <link rel="stylesheet" href="vistas/bower_components/datatables.net-bs/css/responsive.bootstrap.min.css">
 
   <!--=====================================
-  PLUGINS DE JAVASCRIPT
+  JAVASCRIPT PLUGINS
   ======================================-->
 
   <!-- jQuery 3 -->
   <script src="vistas/bower_components/jquery/dist/jquery.min.js"></script>
-  
+
   <!-- Bootstrap 3.3.7 -->
   <script src="vistas/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
   <!-- FastClick -->
   <script src="vistas/bower_components/fastclick/lib/fastclick.js"></script>
-  
+
   <!-- AdminLTE App -->
   <script src="vistas/dist/js/adminlte.min.js"></script>
 
@@ -74,19 +74,19 @@ session_start();
 </head>
 
 <!--=====================================
-CUERPO DOCUMENTO
+DOCUMENT BODY
 ======================================-->
 
 <body class="hold-transition skin-blue sidebar-collapse sidebar-mini login-page">
- 
+
   <?php
 
-  if(isset($_SESSION["iniciarSesion"]) && $_SESSION["iniciarSesion"] == "ok"){
+  if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] == "ok"){
 
    echo '<div class="wrapper">';
 
     /*=============================================
-    CABEZOTE
+    HEADER
     =============================================*/
 
     include "modulos/cabezote.php";
@@ -98,7 +98,7 @@ CUERPO DOCUMENTO
     include "modulos/menu.php";
 
     /*=============================================
-    CONTENIDO
+    CONTENT
     =============================================*/
 
     if(isset($_GET["ruta"])){

@@ -1,6 +1,6 @@
 <?php
 
-$clientes = ControladorClientes::ctrMostrarClientes(null, null);
+$clients = ClientController::ctrShowClients(null, null);
 
 ?>
 
@@ -52,21 +52,21 @@ $clientes = ControladorClientes::ctrMostrarClientes(null, null);
 
             <?php
 
-            $contador = 1;
+            $counter = 1;
 
-            foreach($clientes as $key => $valor){
+            foreach($clients as $key => $value){
 
               echo '<tr>
 
-                <td>'.$contador.'</td>
-                <td>'.$valor["nombre"].'</td>
-                <td>'.$valor["documento"].'</td>
-                <td>'.$valor["telefono"].'</td>
-                <td>'.$valor["email"].'</td>
-                <td>$'.number_format($valor["total_compras"], 2).'</td>
+                <td>'.$counter.'</td>
+                <td>'.$value["nombre"].'</td>
+                <td>'.$value["documento"].'</td>
+                <td>'.$value["telefono"].'</td>
+                <td>'.$value["email"].'</td>
+                <td>$'.number_format($value["total_compras"], 2).'</td>
                 <td>';
 
-              if($valor["estado"] == 1){
+              if($value["estado"] == 1){
                 echo '<button class="btn btn-success btn-xs">Activado</button>';
               }else{
                 echo '<button class="btn btn-danger btn-xs">Inactivo</button>';
@@ -77,12 +77,12 @@ $clientes = ControladorClientes::ctrMostrarClientes(null, null);
 
                   <div class="btn-group">';
 
-              // No permitir eliminar "Publico General"
-              if($valor["id"] != 1){
+              // Do not allow deleting "Publico General"
+              if($value["id"] != 1){
 
-                echo '<button class="btn btn-warning btnEditarCliente" data-toggle="modal" data-target="#modalEditarCliente" idCliente="'.$valor["id"].'"><i class="fa fa-pencil"></i></button>
+                echo '<button class="btn btn-warning btnEditarCliente" data-toggle="modal" data-target="#modalEditarCliente" idCliente="'.$value["id"].'"><i class="fa fa-pencil"></i></button>
 
-                    <a class="btn btn-danger btnEliminarCliente" idCliente="'.$valor["id"].'"><i class="fa fa-times"></i></a>';
+                    <a class="btn btn-danger btnEliminarCliente" idCliente="'.$value["id"].'"><i class="fa fa-times"></i></a>';
 
               }else{
 
@@ -96,7 +96,7 @@ $clientes = ControladorClientes::ctrMostrarClientes(null, null);
 
               </tr>';
 
-              $contador++;
+              $counter++;
 
             }
 
@@ -115,7 +115,7 @@ $clientes = ControladorClientes::ctrMostrarClientes(null, null);
 </div>
 
 <!--=====================================
-MODAL AGREGAR CLIENTE
+ADD CLIENT MODAL
 ======================================-->
 
 <div class="modal fade" id="modalAgregarCliente">
@@ -133,7 +133,7 @@ MODAL AGREGAR CLIENTE
 
               <div class="box-body">
 
-                <!-- NOMBRE -->
+                <!-- NAME -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
@@ -141,7 +141,7 @@ MODAL AGREGAR CLIENTE
                   </div>
                 </div>
 
-                <!-- DOCUMENTO -->
+                <!-- DOCUMENT -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-id-card"></i></span>
@@ -149,7 +149,7 @@ MODAL AGREGAR CLIENTE
                   </div>
                 </div>
 
-                <!-- TELEFONO -->
+                <!-- PHONE -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-phone"></i></span>
@@ -165,7 +165,7 @@ MODAL AGREGAR CLIENTE
                   </div>
                 </div>
 
-                <!-- DIRECCION -->
+                <!-- ADDRESS -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
@@ -173,7 +173,7 @@ MODAL AGREGAR CLIENTE
                   </div>
                 </div>
 
-                <!-- FECHA DE NACIMIENTO -->
+                <!-- DATE OF BIRTH -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -197,7 +197,7 @@ MODAL AGREGAR CLIENTE
 </div>
 
 <!--=====================================
-MODAL EDITAR CLIENTE
+EDIT CLIENT MODAL
 ======================================-->
 
 <div class="modal fade" id="modalEditarCliente">
@@ -217,7 +217,7 @@ MODAL EDITAR CLIENTE
 
                 <input type="hidden" name="idClienteEditar" id="idClienteEditar">
 
-                <!-- NOMBRE -->
+                <!-- NAME -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
@@ -225,7 +225,7 @@ MODAL EDITAR CLIENTE
                   </div>
                 </div>
 
-                <!-- DOCUMENTO -->
+                <!-- DOCUMENT -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-id-card"></i></span>
@@ -233,7 +233,7 @@ MODAL EDITAR CLIENTE
                   </div>
                 </div>
 
-                <!-- TELEFONO -->
+                <!-- PHONE -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-phone"></i></span>
@@ -249,7 +249,7 @@ MODAL EDITAR CLIENTE
                   </div>
                 </div>
 
-                <!-- DIRECCION -->
+                <!-- ADDRESS -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
@@ -257,7 +257,7 @@ MODAL EDITAR CLIENTE
                   </div>
                 </div>
 
-                <!-- FECHA DE NACIMIENTO -->
+                <!-- DATE OF BIRTH -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -282,21 +282,21 @@ MODAL EDITAR CLIENTE
 
 <?php
 
-$crearCliente = new ControladorClientes();
-$crearCliente -> ctrCrearCliente();
+$createClient = new ClientController();
+$createClient -> ctrCreateClient();
 
-$editarCliente = new ControladorClientes();
-$editarCliente -> ctrEditarCliente();
+$updateClient = new ClientController();
+$updateClient -> ctrUpdateClient();
 
-$borrarCliente = new ControladorClientes();
-$borrarCliente -> ctrBorrarCliente();
+$deleteClient = new ClientController();
+$deleteClient -> ctrDeleteClient();
 
 ?>
 
 <script>
 
 /*=============================================
-EDITAR CLIENTE - Cargar datos en modal via AJAX
+EDIT CLIENT - Load data into modal via AJAX
 =============================================*/
 
 $(".tablas").on("click", ".btnEditarCliente", function(){
@@ -332,7 +332,7 @@ $(".tablas").on("click", ".btnEditarCliente", function(){
 });
 
 /*=============================================
-ELIMINAR CLIENTE
+DELETE CLIENT
 =============================================*/
 
 $(".tablas").on("click", ".btnEliminarCliente", function(){

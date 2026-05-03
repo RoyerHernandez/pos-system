@@ -1,6 +1,6 @@
 <?php
 
-$categorias = ControladorCategorias::ctrMostrarCategorias(null, null);
+$categories = CategoryController::ctrShowCategories(null, null);
 
 ?>
 
@@ -49,18 +49,18 @@ $categorias = ControladorCategorias::ctrMostrarCategorias(null, null);
 
             <?php
 
-            $contador = 1;
+            $counter = 1;
 
-            foreach($categorias as $key => $valor){
+            foreach($categories as $key => $value){
 
               echo '<tr>
 
-                <td>'.$contador.'</td>
-                <td>'.$valor["nombre"].'</td>
-                <td>'.$valor["descripcion"].'</td>
+                <td>'.$counter.'</td>
+                <td>'.$value["nombre"].'</td>
+                <td>'.$value["descripcion"].'</td>
                 <td>';
 
-              if($valor["estado"] == 1){
+              if($value["estado"] == 1){
                 echo '<button class="btn btn-success btn-xs">Activada</button>';
               }else{
                 echo '<button class="btn btn-danger btn-xs">Inactiva</button>';
@@ -71,9 +71,9 @@ $categorias = ControladorCategorias::ctrMostrarCategorias(null, null);
 
                   <div class="btn-group">
 
-                    <button class="btn btn-warning btnEditarCategoria" data-toggle="modal" data-target="#modalEditarCategoria" idCategoria="'.$valor["id"].'" catNombre="'.$valor["nombre"].'" catDescripcion="'.$valor["descripcion"].'"><i class="fa fa-pencil"></i></button>
+                    <button class="btn btn-warning btnEditarCategoria" data-toggle="modal" data-target="#modalEditarCategoria" idCategoria="'.$value["id"].'" catNombre="'.$value["nombre"].'" catDescripcion="'.$value["descripcion"].'"><i class="fa fa-pencil"></i></button>
 
-                    <a class="btn btn-danger btnEliminarCategoria" idCategoria="'.$valor["id"].'"><i class="fa fa-times"></i></a>
+                    <a class="btn btn-danger btnEliminarCategoria" idCategoria="'.$value["id"].'"><i class="fa fa-times"></i></a>
 
                   </div>
 
@@ -81,7 +81,7 @@ $categorias = ControladorCategorias::ctrMostrarCategorias(null, null);
 
               </tr>';
 
-              $contador++;
+              $counter++;
 
             }
 
@@ -100,7 +100,7 @@ $categorias = ControladorCategorias::ctrMostrarCategorias(null, null);
 </div>
 
 <!--=====================================
-MODAL AGREGAR CATEGORIA
+ADD CATEGORY MODAL
 ======================================-->
 
 <div class="modal fade" id="modalAgregarCategoria">
@@ -148,7 +148,7 @@ MODAL AGREGAR CATEGORIA
 </div>
 
 <!--=====================================
-MODAL EDITAR CATEGORIA
+EDIT CATEGORY MODAL
 ======================================-->
 
 <div class="modal fade" id="modalEditarCategoria">
@@ -199,21 +199,21 @@ MODAL EDITAR CATEGORIA
 
 <?php
 
-$crearCategoria = new ControladorCategorias();
-$crearCategoria -> ctrCrearCategoria();
+$createCategory = new CategoryController();
+$createCategory -> ctrCreateCategory();
 
-$editarCategoria = new ControladorCategorias();
-$editarCategoria -> ctrEditarCategoria();
+$updateCategory = new CategoryController();
+$updateCategory -> ctrUpdateCategory();
 
-$borrarCategoria = new ControladorCategorias();
-$borrarCategoria -> ctrBorrarCategoria();
+$deleteCategory = new CategoryController();
+$deleteCategory -> ctrDeleteCategory();
 
 ?>
 
 <script>
 
 /*=============================================
-EDITAR CATEGORIA - Cargar datos en modal
+EDIT CATEGORY - Load data into modal
 =============================================*/
 
 $(".tablas").on("click", ".btnEditarCategoria", function(){
@@ -229,7 +229,7 @@ $(".tablas").on("click", ".btnEditarCategoria", function(){
 });
 
 /*=============================================
-ELIMINAR CATEGORIA
+DELETE CATEGORY
 =============================================*/
 
 $(".tablas").on("click", ".btnEliminarCategoria", function(){

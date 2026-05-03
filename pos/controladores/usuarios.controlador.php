@@ -1,37 +1,37 @@
 <?php
 
-class ControladorUsuarios{
+class UserController{
 
 	/*=============================================
-	INGRESO DE USUARIO
+	USER LOGIN
 	=============================================*/
 
-	static public function ctrIngresoUsuario(){
+	static public function ctrUserLogin(){
 
 		if(isset($_POST["ingUsuario"])){
 
 			if(preg_match('/^[a-zA-Z0-9]+$/', $_POST["ingUsuario"]) &&
 			   preg_match('/^[a-zA-Z0-9]+$/', $_POST["ingPassword"])){
 
-				$tabla = "usuarios";
+				$table = "usuarios";
 
 				$item = "usuario";
 				$valor = $_POST["ingUsuario"];
 
-				$respuesta = ModeloUsuarios::mdlMostrarUsuarios($tabla, $item, $valor);
+				$response = UserModel::mdlShowUsers($table, $item, $valor);
 
-				if($respuesta && $respuesta["usuario"] == $_POST["ingUsuario"] &&
-				   password_verify($_POST["ingPassword"], $respuesta["password"]) &&
-				   $respuesta["estado"] == 1){
+				if($response && $response["usuario"] == $_POST["ingUsuario"] &&
+				   password_verify($_POST["ingPassword"], $response["password"]) &&
+				   $response["estado"] == 1){
 
-					$_SESSION["iniciarSesion"] = "ok";
-					$_SESSION["id"] = $respuesta["id"];
-					$_SESSION["nombre"] = $respuesta["nombre"];
-					$_SESSION["usuario"] = $respuesta["usuario"];
-					$_SESSION["foto"] = $respuesta["foto"];
-					$_SESSION["perfil"] = $respuesta["perfil"];
+					$_SESSION["loggedIn"] = "ok";
+					$_SESSION["id"] = $response["id"];
+					$_SESSION["name"] = $response["nombre"];
+					$_SESSION["username"] = $response["usuario"];
+					$_SESSION["photo"] = $response["foto"];
+					$_SESSION["role"] = $response["perfil"];
 
-					ModeloUsuarios::mdlActualizarLogin($tabla, $respuesta["id"]);
+					UserModel::mdlUpdateLastLogin($table, $response["id"]);
 
 					echo '<script>
 
@@ -52,24 +52,24 @@ class ControladorUsuarios{
 	}
 
 	/*=============================================
-	MOSTRAR USUARIOS
+	SHOW USERS
 	=============================================*/
 
-	static public function ctrMostrarUsuarios($item, $valor){
+	static public function ctrShowUsers($item, $valor){
 
-		$tabla = "usuarios";
+		$table = "usuarios";
 
-		$respuesta = ModeloUsuarios::mdlMostrarUsuarios($tabla, $item, $valor);
+		$response = UserModel::mdlShowUsers($table, $item, $valor);
 
-		return $respuesta;
+		return $response;
 
 	}
 
 	/*=============================================
-	REGISTRO DE USUARIO
+	CREATE USER
 	=============================================*/
 
-	static public function ctrCrearUsuario(){
+	static public function ctrCreateUser(){
 
 		if(isset($_POST["nuevoUsuario"]) && $_POST["nuevoUsuario"] != ""){
 
@@ -78,77 +78,77 @@ class ControladorUsuarios{
 			   preg_match('/^[a-zA-Z0-9]+$/', $_POST["nuevoPassword"])){
 
 			   	/*=============================================
-				VALIDAR IMAGEN
+				VALIDATE IMAGE
 				=============================================*/
 
-				$ruta = "";
+				$path = "";
 
 				if(isset($_FILES["nuevaFoto"]["tmp_name"]) && !empty($_FILES["nuevaFoto"]["tmp_name"])){
 
-					list($ancho, $alto) = getimagesize($_FILES["nuevaFoto"]["tmp_name"]);
+					list($width, $height) = getimagesize($_FILES["nuevaFoto"]["tmp_name"]);
 
-					$nuevoAncho = 500;
-					$nuevoAlto = 500;
+					$newWidth = 500;
+					$newHeight = 500;
 
 					/*=============================================
-					CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL USUARIO
+					CREATE DIRECTORY FOR USER PHOTO
 					=============================================*/
 
-					$directorio = "vistas/img/usuarios/".$_POST["nuevoUsuario"];
+					$directory = "vistas/img/usuarios/".$_POST["nuevoUsuario"];
 
-					mkdir($directorio, 0755);
+					mkdir($directory, 0755);
 
 					/*=============================================
-					DE ACUERDO AL TIPO DE IMAGEN APLICAMOS LAS FUNCIONES POR DEFECTO DE PHP
+					PROCESS IMAGE BASED ON FILE TYPE
 					=============================================*/
 
 					if($_FILES["nuevaFoto"]["type"] == "image/jpeg"){
 
-						$aleatorio = mt_rand(100,999);
+						$random = mt_rand(100,999);
 
-						$ruta = "vistas/img/usuarios/".$_POST["nuevoUsuario"]."/".$aleatorio.".jpg";
+						$path = "vistas/img/usuarios/".$_POST["nuevoUsuario"]."/".$random.".jpg";
 
-						$origen = imagecreatefromjpeg($_FILES["nuevaFoto"]["tmp_name"]);
+						$source = imagecreatefromjpeg($_FILES["nuevaFoto"]["tmp_name"]);
 
-						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+						$destination = imagecreatetruecolor($newWidth, $newHeight);
 
-						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+						imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-						imagejpeg($destino, $ruta);
+						imagejpeg($destination, $path);
 
 					}
 
 					if($_FILES["nuevaFoto"]["type"] == "image/png"){
 
-						$aleatorio = mt_rand(100,999);
+						$random = mt_rand(100,999);
 
-						$ruta = "vistas/img/usuarios/".$_POST["nuevoUsuario"]."/".$aleatorio.".png";
+						$path = "vistas/img/usuarios/".$_POST["nuevoUsuario"]."/".$random.".png";
 
-						$origen = imagecreatefrompng($_FILES["nuevaFoto"]["tmp_name"]);
+						$source = imagecreatefrompng($_FILES["nuevaFoto"]["tmp_name"]);
 
-						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+						$destination = imagecreatetruecolor($newWidth, $newHeight);
 
-						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+						imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-						imagepng($destino, $ruta);
+						imagepng($destination, $path);
 
 					}
 
 				}
 
-				$tabla = "usuarios";
+				$table = "usuarios";
 
-				$encriptar = password_hash($_POST["nuevoPassword"], PASSWORD_BCRYPT);
+				$encrypted = password_hash($_POST["nuevoPassword"], PASSWORD_BCRYPT);
 
-				$datos = array("nombre" => $_POST["nuevoNombre"],
+				$data = array("nombre" => $_POST["nuevoNombre"],
 					           "usuario" => $_POST["nuevoUsuario"],
-					           "password" => $encriptar,
+					           "password" => $encrypted,
 					           "perfil" => $_POST["nuevoPerfil"],
-					           "foto" => $ruta);
+					           "foto" => $path);
 
-				$respuesta = ModeloUsuarios::mdlIngresarUsuario($tabla, $datos);
+				$response = UserModel::mdlInsertUser($table, $data);
 
-				if($respuesta == "ok"){
+				if($response == "ok"){
 
 					echo '<script>
 
@@ -205,60 +205,60 @@ class ControladorUsuarios{
 	}
 
 	/*=============================================
-	EDITAR USUARIO
+	UPDATE USER
 	=============================================*/
 
-	static public function ctrEditarUsuario(){
+	static public function ctrUpdateUser(){
 
 		if(isset($_POST["editarUsuario"])){
 
 			/*=============================================
-			VALIDAR IMAGEN
+			VALIDATE IMAGE
 			=============================================*/
 
-			$ruta = $_POST["fotoActual"];
+			$path = $_POST["fotoActual"];
 
 			if(isset($_FILES["editarFoto"]["tmp_name"]) && !empty($_FILES["editarFoto"]["tmp_name"])){
 
-				list($ancho, $alto) = getimagesize($_FILES["editarFoto"]["tmp_name"]);
+				list($width, $height) = getimagesize($_FILES["editarFoto"]["tmp_name"]);
 
-				$nuevoAncho = 500;
-				$nuevoAlto = 500;
+				$newWidth = 500;
+				$newHeight = 500;
 
-				$directorio = "vistas/img/usuarios/".$_POST["editarUsuario"];
+				$directory = "vistas/img/usuarios/".$_POST["editarUsuario"];
 
-				if(!is_dir($directorio)){
-					mkdir($directorio, 0755);
+				if(!is_dir($directory)){
+					mkdir($directory, 0755);
 				}
 
 				if($_FILES["editarFoto"]["type"] == "image/jpeg"){
 
-					$aleatorio = mt_rand(100,999);
-					$ruta = "vistas/img/usuarios/".$_POST["editarUsuario"]."/".$aleatorio.".jpg";
-					$origen = imagecreatefromjpeg($_FILES["editarFoto"]["tmp_name"]);
-					$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-					imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-					imagejpeg($destino, $ruta);
+					$random = mt_rand(100,999);
+					$path = "vistas/img/usuarios/".$_POST["editarUsuario"]."/".$random.".jpg";
+					$source = imagecreatefromjpeg($_FILES["editarFoto"]["tmp_name"]);
+					$destination = imagecreatetruecolor($newWidth, $newHeight);
+					imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+					imagejpeg($destination, $path);
 
 				}
 
 				if($_FILES["editarFoto"]["type"] == "image/png"){
 
-					$aleatorio = mt_rand(100,999);
-					$ruta = "vistas/img/usuarios/".$_POST["editarUsuario"]."/".$aleatorio.".png";
-					$origen = imagecreatefrompng($_FILES["editarFoto"]["tmp_name"]);
-					$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-					imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-					imagepng($destino, $ruta);
+					$random = mt_rand(100,999);
+					$path = "vistas/img/usuarios/".$_POST["editarUsuario"]."/".$random.".png";
+					$source = imagecreatefrompng($_FILES["editarFoto"]["tmp_name"]);
+					$destination = imagecreatetruecolor($newWidth, $newHeight);
+					imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+					imagepng($destination, $path);
 
 				}
 
 			}
 
-			$tabla = "usuarios";
+			$table = "usuarios";
 
 			/*=============================================
-			VALIDAR SI SE CAMBIÓ EL PASSWORD
+			CHECK IF PASSWORD WAS CHANGED
 			=============================================*/
 
 			if(!empty($_POST["editarPassword"])){
@@ -267,15 +267,15 @@ class ControladorUsuarios{
 				$password = $_POST["passwordActual"];
 			}
 
-			$datos = array("nombre" => $_POST["editarNombre"],
+			$data = array("nombre" => $_POST["editarNombre"],
 				           "usuario" => $_POST["editarUsuario"],
 				           "password" => $password,
 				           "perfil" => $_POST["editarPerfil"],
-				           "foto" => $ruta);
+				           "foto" => $path);
 
-			$respuesta = ModeloUsuarios::mdlEditarUsuario($tabla, $datos);
+			$response = UserModel::mdlUpdateUser($table, $data);
 
-			if($respuesta == "ok"){
+			if($response == "ok"){
 
 				echo '<script>
 
@@ -305,21 +305,21 @@ class ControladorUsuarios{
 	}
 
 	/*=============================================
-	BORRAR USUARIO
+	DELETE USER
 	=============================================*/
 
-	static public function ctrBorrarUsuario(){
+	static public function ctrDeleteUser(){
 
 		if(isset($_GET["idUsuario"])){
 
-			$tabla = "usuarios";
+			$table = "usuarios";
 
-			$datos = array("id" => $_GET["idUsuario"],
+			$data = array("id" => $_GET["idUsuario"],
 				           "estado" => 0);
 
-			$respuesta = ModeloUsuarios::mdlBorrarUsuario($tabla, $datos);
+			$response = UserModel::mdlDeleteUser($table, $data);
 
-			if($respuesta == "ok"){
+			if($response == "ok"){
 
 				echo '<script>
 

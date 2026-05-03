@@ -2,19 +2,19 @@
 
 require_once "conexion.php";
 
-class ModeloClientes{
+class ClientModel{
 
 	/*=============================================
-	MOSTRAR CLIENTES
+	SHOW CLIENTS
 	=============================================*/
 
-	static public function mdlMostrarClientes($tabla, $item, $valor){
+	static public function mdlShowClients($table, $item, $value){
 
 		if($item != null){
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
+			$stmt = Connection::connect()->prepare("SELECT * FROM $table WHERE $item = :$item");
 
-			$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
+			$stmt -> bindParam(":".$item, $value, PDO::PARAM_STR);
 
 			$stmt -> execute();
 
@@ -22,7 +22,7 @@ class ModeloClientes{
 
 		}else{
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla ORDER BY id DESC");
+			$stmt = Connection::connect()->prepare("SELECT * FROM $table ORDER BY id DESC");
 
 			$stmt -> execute();
 
@@ -33,19 +33,19 @@ class ModeloClientes{
 	}
 
 	/*=============================================
-	INGRESAR CLIENTE
+	INSERT CLIENT
 	=============================================*/
 
-	static public function mdlIngresarCliente($tabla, $datos){
+	static public function mdlInsertClient($table, $data){
 
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(nombre, documento, email, telefono, direccion, fecha_nacimiento) VALUES (:nombre, :documento, :email, :telefono, :direccion, :fecha_nacimiento)");
+		$stmt = Connection::connect()->prepare("INSERT INTO $table(nombre, documento, email, telefono, direccion, fecha_nacimiento) VALUES (:nombre, :documento, :email, :telefono, :direccion, :fecha_nacimiento)");
 
-		$stmt -> bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
-		$stmt -> bindParam(":documento", $datos["documento"], PDO::PARAM_STR);
-		$stmt -> bindParam(":email", $datos["email"], PDO::PARAM_STR);
-		$stmt -> bindParam(":telefono", $datos["telefono"], PDO::PARAM_STR);
-		$stmt -> bindParam(":direccion", $datos["direccion"], PDO::PARAM_STR);
-		$stmt -> bindParam(":fecha_nacimiento", $datos["fecha_nacimiento"], PDO::PARAM_STR);
+		$stmt -> bindParam(":nombre", $data["nombre"], PDO::PARAM_STR);
+		$stmt -> bindParam(":documento", $data["documento"], PDO::PARAM_STR);
+		$stmt -> bindParam(":email", $data["email"], PDO::PARAM_STR);
+		$stmt -> bindParam(":telefono", $data["telefono"], PDO::PARAM_STR);
+		$stmt -> bindParam(":direccion", $data["direccion"], PDO::PARAM_STR);
+		$stmt -> bindParam(":fecha_nacimiento", $data["fecha_nacimiento"], PDO::PARAM_STR);
 
 		if($stmt -> execute()){
 
@@ -60,20 +60,20 @@ class ModeloClientes{
 	}
 
 	/*=============================================
-	EDITAR CLIENTE
+	UPDATE CLIENT
 	=============================================*/
 
-	static public function mdlEditarCliente($tabla, $datos){
+	static public function mdlUpdateClient($table, $data){
 
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre = :nombre, documento = :documento, email = :email, telefono = :telefono, direccion = :direccion, fecha_nacimiento = :fecha_nacimiento WHERE id = :id");
+		$stmt = Connection::connect()->prepare("UPDATE $table SET nombre = :nombre, documento = :documento, email = :email, telefono = :telefono, direccion = :direccion, fecha_nacimiento = :fecha_nacimiento WHERE id = :id");
 
-		$stmt -> bindParam(":id", $datos["id"], PDO::PARAM_INT);
-		$stmt -> bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
-		$stmt -> bindParam(":documento", $datos["documento"], PDO::PARAM_STR);
-		$stmt -> bindParam(":email", $datos["email"], PDO::PARAM_STR);
-		$stmt -> bindParam(":telefono", $datos["telefono"], PDO::PARAM_STR);
-		$stmt -> bindParam(":direccion", $datos["direccion"], PDO::PARAM_STR);
-		$stmt -> bindParam(":fecha_nacimiento", $datos["fecha_nacimiento"], PDO::PARAM_STR);
+		$stmt -> bindParam(":id", $data["id"], PDO::PARAM_INT);
+		$stmt -> bindParam(":nombre", $data["nombre"], PDO::PARAM_STR);
+		$stmt -> bindParam(":documento", $data["documento"], PDO::PARAM_STR);
+		$stmt -> bindParam(":email", $data["email"], PDO::PARAM_STR);
+		$stmt -> bindParam(":telefono", $data["telefono"], PDO::PARAM_STR);
+		$stmt -> bindParam(":direccion", $data["direccion"], PDO::PARAM_STR);
+		$stmt -> bindParam(":fecha_nacimiento", $data["fecha_nacimiento"], PDO::PARAM_STR);
 
 		if($stmt -> execute()){
 
@@ -88,15 +88,15 @@ class ModeloClientes{
 	}
 
 	/*=============================================
-	BORRAR CLIENTE (soft delete)
+	DELETE CLIENT (soft delete)
 	=============================================*/
 
-	static public function mdlBorrarCliente($tabla, $datos){
+	static public function mdlDeleteClient($table, $data){
 
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET estado = :estado WHERE id = :id");
+		$stmt = Connection::connect()->prepare("UPDATE $table SET estado = :estado WHERE id = :id");
 
-		$stmt -> bindParam(":id", $datos["id"], PDO::PARAM_INT);
-		$stmt -> bindParam(":estado", $datos["estado"], PDO::PARAM_INT);
+		$stmt -> bindParam(":id", $data["id"], PDO::PARAM_INT);
+		$stmt -> bindParam(":estado", $data["estado"], PDO::PARAM_INT);
 
 		if($stmt -> execute()){
 
@@ -111,15 +111,15 @@ class ModeloClientes{
 	}
 
 	/*=============================================
-	ACTUALIZAR COMPRAS DEL CLIENTE
+	UPDATE CLIENT PURCHASES
 	=============================================*/
 
-	static public function mdlActualizarCompras($tabla, $id, $monto){
+	static public function mdlUpdatePurchases($table, $id, $amount){
 
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET total_compras = total_compras + :monto WHERE id = :id");
+		$stmt = Connection::connect()->prepare("UPDATE $table SET total_compras = total_compras + :amount WHERE id = :id");
 
 		$stmt -> bindParam(":id", $id, PDO::PARAM_INT);
-		$stmt -> bindParam(":monto", $monto, PDO::PARAM_STR);
+		$stmt -> bindParam(":amount", $amount, PDO::PARAM_STR);
 
 		if($stmt -> execute()){
 
