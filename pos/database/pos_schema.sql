@@ -74,6 +74,7 @@ CREATE TABLE clientes (
   direccion VARCHAR(255) DEFAULT NULL,
   fecha_nacimiento DATE DEFAULT NULL,
   total_compras DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  estado TINYINT(1) NOT NULL DEFAULT 1,
   fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
