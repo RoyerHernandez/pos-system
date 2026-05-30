@@ -16,9 +16,9 @@ class UserController{
 				$table = "usuarios";
 
 				$item = "usuario";
-				$valor = $_POST["ingUsuario"];
+				$value = $_POST["ingUsuario"];
 
-				$response = UserModel::mdlShowUsers($table, $item, $valor);
+				$response = UserModel::mdlShowUsers($table, $item, $value);
 
 				if($response && $response["usuario"] == $_POST["ingUsuario"] &&
 				   password_verify($_POST["ingPassword"], $response["password"]) &&
@@ -55,11 +55,11 @@ class UserController{
 	SHOW USERS
 	=============================================*/
 
-	static public function ctrShowUsers($item, $valor){
+	static public function ctrShowUsers($item, $value){
 
 		$table = "usuarios";
 
-		$response = UserModel::mdlShowUsers($table, $item, $valor);
+		$response = UserModel::mdlShowUsers($table, $item, $value);
 
 		return $response;
 
@@ -91,22 +91,22 @@ class UserController{
 					$newHeight = 500;
 
 					/*=============================================
-					CREATE DIRECTORY FOR USER PHOTO
+					CREATE DIRECTORY TO STORE USER PHOTO
 					=============================================*/
 
-					$directory = "vistas/img/usuarios/".$_POST["nuevoUsuario"];
+					$directory = "views/img/usuarios/".$_POST["nuevoUsuario"];
 
 					mkdir($directory, 0755);
 
 					/*=============================================
-					PROCESS IMAGE BASED ON FILE TYPE
+					APPLY PHP IMAGE FUNCTIONS BASED ON TYPE
 					=============================================*/
 
 					if($_FILES["nuevaFoto"]["type"] == "image/jpeg"){
 
 						$random = mt_rand(100,999);
 
-						$path = "vistas/img/usuarios/".$_POST["nuevoUsuario"]."/".$random.".jpg";
+						$path = "views/img/usuarios/".$_POST["nuevoUsuario"]."/".$random.".jpg";
 
 						$source = imagecreatefromjpeg($_FILES["nuevaFoto"]["tmp_name"]);
 
@@ -122,7 +122,7 @@ class UserController{
 
 						$random = mt_rand(100,999);
 
-						$path = "vistas/img/usuarios/".$_POST["nuevoUsuario"]."/".$random.".png";
+						$path = "views/img/usuarios/".$_POST["nuevoUsuario"]."/".$random.".png";
 
 						$source = imagecreatefrompng($_FILES["nuevaFoto"]["tmp_name"]);
 
@@ -225,7 +225,7 @@ class UserController{
 				$newWidth = 500;
 				$newHeight = 500;
 
-				$directory = "vistas/img/usuarios/".$_POST["editarUsuario"];
+				$directory = "views/img/usuarios/".$_POST["editarUsuario"];
 
 				if(!is_dir($directory)){
 					mkdir($directory, 0755);
@@ -234,7 +234,7 @@ class UserController{
 				if($_FILES["editarFoto"]["type"] == "image/jpeg"){
 
 					$random = mt_rand(100,999);
-					$path = "vistas/img/usuarios/".$_POST["editarUsuario"]."/".$random.".jpg";
+					$path = "views/img/usuarios/".$_POST["editarUsuario"]."/".$random.".jpg";
 					$source = imagecreatefromjpeg($_FILES["editarFoto"]["tmp_name"]);
 					$destination = imagecreatetruecolor($newWidth, $newHeight);
 					imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
@@ -245,7 +245,7 @@ class UserController{
 				if($_FILES["editarFoto"]["type"] == "image/png"){
 
 					$random = mt_rand(100,999);
-					$path = "vistas/img/usuarios/".$_POST["editarUsuario"]."/".$random.".png";
+					$path = "views/img/usuarios/".$_POST["editarUsuario"]."/".$random.".png";
 					$source = imagecreatefrompng($_FILES["editarFoto"]["tmp_name"]);
 					$destination = imagecreatetruecolor($newWidth, $newHeight);
 					imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);

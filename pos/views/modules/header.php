@@ -8,7 +8,7 @@
 		<!-- logo mini -->
 		<span class="logo-mini">
 
-			<img src="vistas/img/plantilla/icono-blanco.png" class="img-responsive" style="padding:10px">
+			<img src="views/img/plantilla/icono-blanco.png" class="img-responsive" style="padding:10px">
 
 		</span>
 
@@ -16,7 +16,7 @@
 
 		<span class="logo-lg">
 
-			<img src="vistas/img/plantilla/logo-blanco-lineal.png" class="img-responsive" style="padding:10px 0px">
+			<img src="views/img/plantilla/logo-blanco-lineal.png" class="img-responsive" style="padding:10px 0px">
 
 		</span>
 
@@ -48,7 +48,7 @@
 						<?php if(!empty($_SESSION["photo"])): ?>
 							<img src="<?php echo $_SESSION["photo"]; ?>" class="user-image">
 						<?php else: ?>
-							<img src="vistas/img/usuarios/default/anonymous.png" class="user-image">
+							<img src="views/img/usuarios/default/anonymous.png" class="user-image">
 						<?php endif; ?>
 
 						<span class="hidden-xs"><?php echo isset($_SESSION["name"]) ? $_SESSION["name"] : "Usuario"; ?></span>
@@ -65,7 +65,7 @@
 							<?php if(!empty($_SESSION["photo"])): ?>
 								<img src="<?php echo $_SESSION["photo"]; ?>" class="img-circle" alt="User Image">
 							<?php else: ?>
-								<img src="vistas/img/usuarios/default/anonymous.png" class="img-circle" alt="User Image">
+								<img src="views/img/usuarios/default/anonymous.png" class="img-circle" alt="User Image">
 							<?php endif; ?>
 
 							<p>

@@ -6,11 +6,11 @@ class ProductController{
 	SHOW PRODUCTS
 	=============================================*/
 
-	static public function ctrShowProducts($item, $valor){
+	static public function ctrShowProducts($item, $value){
 
 		$table = "productos";
 
-		$response = ProductModel::mdlShowProducts($table, $item, $valor);
+		$response = ProductModel::mdlShowProducts($table, $item, $value);
 
 		return $response;
 
@@ -39,14 +39,14 @@ class ProductController{
 					$newWidth = 500;
 					$newHeight = 500;
 
-					$directory = "vistas/img/productos/".$_POST["nuevoCodigo"];
+					$directory = "views/img/productos/".$_POST["nuevoCodigo"];
 
 					mkdir($directory, 0755);
 
 					if($_FILES["nuevaImagen"]["type"] == "image/jpeg"){
 
 						$random = mt_rand(100,999);
-						$path = "vistas/img/productos/".$_POST["nuevoCodigo"]."/".$random.".jpg";
+						$path = "views/img/productos/".$_POST["nuevoCodigo"]."/".$random.".jpg";
 						$source = imagecreatefromjpeg($_FILES["nuevaImagen"]["tmp_name"]);
 						$destination = imagecreatetruecolor($newWidth, $newHeight);
 						imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
@@ -57,7 +57,7 @@ class ProductController{
 					if($_FILES["nuevaImagen"]["type"] == "image/png"){
 
 						$random = mt_rand(100,999);
-						$path = "vistas/img/productos/".$_POST["nuevoCodigo"]."/".$random.".png";
+						$path = "views/img/productos/".$_POST["nuevoCodigo"]."/".$random.".png";
 						$source = imagecreatefrompng($_FILES["nuevaImagen"]["tmp_name"]);
 						$destination = imagecreatetruecolor($newWidth, $newHeight);
 						imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
@@ -156,7 +156,7 @@ class ProductController{
 				$newWidth = 500;
 				$newHeight = 500;
 
-				$directory = "vistas/img/productos/".$_POST["editarCodigo"];
+				$directory = "views/img/productos/".$_POST["editarCodigo"];
 
 				if(!is_dir($directory)){
 					mkdir($directory, 0755);
@@ -165,7 +165,7 @@ class ProductController{
 				if($_FILES["editarImagen"]["type"] == "image/jpeg"){
 
 					$random = mt_rand(100,999);
-					$path = "vistas/img/productos/".$_POST["editarCodigo"]."/".$random.".jpg";
+					$path = "views/img/productos/".$_POST["editarCodigo"]."/".$random.".jpg";
 					$source = imagecreatefromjpeg($_FILES["editarImagen"]["tmp_name"]);
 					$destination = imagecreatetruecolor($newWidth, $newHeight);
 					imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
@@ -176,7 +176,7 @@ class ProductController{
 				if($_FILES["editarImagen"]["type"] == "image/png"){
 
 					$random = mt_rand(100,999);
-					$path = "vistas/img/productos/".$_POST["editarCodigo"]."/".$random.".png";
+					$path = "views/img/productos/".$_POST["editarCodigo"]."/".$random.".png";
 					$source = imagecreatefrompng($_FILES["editarImagen"]["tmp_name"]);
 					$destination = imagecreatetruecolor($newWidth, $newHeight);
 					imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);

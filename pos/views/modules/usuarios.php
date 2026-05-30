@@ -61,7 +61,7 @@ $users = UserController::ctrShowUsers(null, null);
                 <td>'.$counter.'</td>
                 <td>'.$value["nombre"].'</td>
                 <td>'.$value["usuario"].'</td>
-                <td><img src="'.(!empty($value["foto"]) ? $value["foto"] : 'vistas/img/usuarios/default/anonymous.png').'" class="img-thumbnail" width="40px"></td>
+                <td><img src="'.(!empty($value["foto"]) ? $value["foto"] : 'views/img/usuarios/default/anonymous.png').'" class="img-thumbnail" width="40px"></td>
                 <td>'.$value["perfil"].'</td>
                 <td>';
 
@@ -175,7 +175,7 @@ ADD USER MODAL
 
                     <p class="help-block">Peso máximo de la foto 2 MB</p>
 
-                    <img src="vistas/img/usuarios/default/anonymous.png" class="img-thumbnail previewFoto" width="100px">
+                    <img src="views/img/usuarios/default/anonymous.png" class="img-thumbnail previewFoto" width="100px">
 
                   </div>
 
@@ -268,7 +268,7 @@ EDIT USER MODAL
 
                     <p class="help-block">Peso máximo de la foto 2 MB</p>
 
-                    <img src="vistas/img/usuarios/default/anonymous.png" class="img-thumbnail previewFotoEditar" width="100px" id="fotoActualImg">
+                    <img src="views/img/usuarios/default/anonymous.png" class="img-thumbnail previewFotoEditar" width="100px" id="fotoActualImg">
 
                   </div>
 
@@ -338,7 +338,7 @@ $(".tablas").on("click", ".btnEditarUsuario", function(){
       if(respuesta["foto"] != ""){
         $("#fotoActualImg").attr("src", respuesta["foto"]);
       }else{
-        $("#fotoActualImg").attr("src", "vistas/img/usuarios/default/anonymous.png");
+        $("#fotoActualImg").attr("src", "views/img/usuarios/default/anonymous.png");
       }
 
     }

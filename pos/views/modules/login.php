@@ -4,7 +4,7 @@
 
   <div class="login-logo">
 
-    <img src="vistas/img/plantilla/Callejon3.jpg" class="img-responsive" style="padding:30px 100px 0px 100px">
+    <img src="views/img/plantilla/Callejon3.jpg" class="img-responsive" style="padding:30px 100px 0px 100px">
 
   </div>
 

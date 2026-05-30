@@ -4,9 +4,8 @@ class TemplateController{
 
 	static public function ctrTemplate(){
 
-		include "vistas/plantilla.php";
+		include "views/template.php";
 
 	}
-
 
 }

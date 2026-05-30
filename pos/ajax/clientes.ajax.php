@@ -2,21 +2,39 @@
 
 session_start();
 
-if(!isset($_SESSION["iniciarSesion"]) || $_SESSION["iniciarSesion"] != "ok"){
-	echo json_encode(array("error" => "No autorizado"));
+if(!isset($_SESSION["loggedIn"]) || $_SESSION["loggedIn"] != "ok"){
+	echo json_encode(array("error" => "Unauthorized"));
 	return;
 }
 
-require_once "../modelos/conexion.php";
-require_once "../modelos/clientes.modelo.php";
+require_once "../models/connection.php";
+require_once "../models/clients.model.php";
+
+/*=============================================
+GET CLIENT BY ID (for edit modal)
+=============================================*/
 
 if(isset($_POST["idCliente"])){
 
 	$item = "id";
-	$valor = $_POST["idCliente"];
+	$value = $_POST["idCliente"];
 
-	$respuesta = ModeloClientes::mdlMostrarClientes("clientes", $item, $valor);
+	$response = ClientModel::mdlShowClients("clientes", $item, $value);
 
-	echo json_encode($respuesta);
+	echo json_encode($response);
+
+}
+
+/*=============================================
+SEARCH CLIENTS (autocomplete for POS)
+=============================================*/
+
+if(isset($_POST["searchClient"])){
+
+	$search = $_POST["searchClient"];
+
+	$response = ClientModel::mdlSearchClients("clientes", $search);
+
+	echo json_encode($response);
 
 }

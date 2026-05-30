@@ -61,9 +61,9 @@ $categories = CategoryController::ctrShowCategories(null, null);
                 <td>';
 
               if($value["estado"] == 1){
-                echo '<button class="btn btn-success btn-xs">Activada</button>';
+                echo '<button class="btn btn-success btn-xs">Activado</button>';
               }else{
-                echo '<button class="btn btn-danger btn-xs">Inactiva</button>';
+                echo '<button class="btn btn-danger btn-xs">Inactivo</button>';
               }
 
               echo '</td>
@@ -71,7 +71,7 @@ $categories = CategoryController::ctrShowCategories(null, null);
 
                   <div class="btn-group">
 
-                    <button class="btn btn-warning btnEditarCategoria" data-toggle="modal" data-target="#modalEditarCategoria" idCategoria="'.$value["id"].'" catNombre="'.$value["nombre"].'" catDescripcion="'.$value["descripcion"].'"><i class="fa fa-pencil"></i></button>
+                    <button class="btn btn-warning btnEditarCategoria" data-toggle="modal" data-target="#modalEditarCategoria" idCategoria="'.$value["id"].'" nombre="'.$value["nombre"].'" descripcion="'.$value["descripcion"].'"><i class="fa fa-pencil"></i></button>
 
                     <a class="btn btn-danger btnEliminarCategoria" idCategoria="'.$value["id"].'"><i class="fa fa-times"></i></a>
 
@@ -118,6 +118,7 @@ ADD CATEGORY MODAL
 
               <div class="box-body">
 
+                <!-- NAME INPUT -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-th"></i></span>
@@ -125,6 +126,7 @@ ADD CATEGORY MODAL
                   </div>
                 </div>
 
+                <!-- DESCRIPTION INPUT -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-comment"></i></span>
@@ -168,17 +170,19 @@ EDIT CATEGORY MODAL
 
                 <input type="hidden" name="idCategoriaEditar" id="idCategoriaEditar">
 
+                <!-- NAME INPUT -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-th"></i></span>
-                    <input type="text" class="form-control input-lg" name="editarCategoria" id="editarCategoria" placeholder="Nombre de la categoría" required>
+                    <input type="text" class="form-control input-lg" name="editarCategoria" id="editarCategoria" placeholder="Nombre" required>
                   </div>
                 </div>
 
+                <!-- DESCRIPTION INPUT -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-comment"></i></span>
-                    <input type="text" class="form-control input-lg" name="editarDescripcionCat" id="editarDescripcionCat" placeholder="Descripción (opcional)">
+                    <input type="text" class="form-control input-lg" name="editarDescripcionCat" id="editarDescripcionCat" placeholder="Descripción">
                   </div>
                 </div>
 
@@ -219,12 +223,12 @@ EDIT CATEGORY - Load data into modal
 $(".tablas").on("click", ".btnEditarCategoria", function(){
 
   var idCategoria = $(this).attr("idCategoria");
-  var catNombre = $(this).attr("catNombre");
-  var catDescripcion = $(this).attr("catDescripcion");
+  var nombre = $(this).attr("nombre");
+  var descripcion = $(this).attr("descripcion");
 
   $("#idCategoriaEditar").val(idCategoria);
-  $("#editarCategoria").val(catNombre);
-  $("#editarDescripcionCat").val(catDescripcion);
+  $("#editarCategoria").val(nombre);
+  $("#editarDescripcionCat").val(descripcion);
 
 });
 

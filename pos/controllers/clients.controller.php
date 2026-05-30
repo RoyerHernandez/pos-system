@@ -6,11 +6,11 @@ class ClientController{
 	SHOW CLIENTS
 	=============================================*/
 
-	static public function ctrShowClients($item, $valor){
+	static public function ctrShowClients($item, $value){
 
 		$table = "clientes";
 
-		$response = ClientModel::mdlShowClients($table, $item, $valor);
+		$response = ClientModel::mdlShowClients($table, $item, $value);
 
 		return $response;
 

@@ -62,7 +62,7 @@ $categories = CategoryController::ctrShowCategories(null, null);
               echo '<tr>
 
                 <td>'.$counter.'</td>
-                <td><img src="'.(!empty($value["imagen"]) ? $value["imagen"] : 'vistas/img/productos/default/anonymous.png').'" class="img-thumbnail" width="40px"></td>
+                <td><img src="'.(!empty($value["imagen"]) ? $value["imagen"] : 'views/img/productos/default/anonymous.png').'" class="img-thumbnail" width="40px"></td>
                 <td>'.$value["codigo"].'</td>
                 <td>'.$value["descripcion"].'</td>
                 <td><span class="label label-info">'.$value["categoria"].'</span></td>
@@ -233,7 +233,7 @@ ADD PRODUCT MODAL
                   <div class="panel">SUBIR IMAGEN</div>
                   <input type="file" class="nuevaImagen" name="nuevaImagen" accept="image/*">
                   <p class="help-block">Peso máximo 2 MB. Formato JPG o PNG.</p>
-                  <img src="vistas/img/productos/default/anonymous.png" class="img-thumbnail previewImagen" width="100px">
+                  <img src="views/img/productos/default/anonymous.png" class="img-thumbnail previewImagen" width="100px">
                 </div>
 
               </div>
@@ -368,7 +368,7 @@ EDIT PRODUCT MODAL
                   <div class="panel">CAMBIAR IMAGEN</div>
                   <input type="file" class="editarImagen" name="editarImagen" accept="image/*">
                   <p class="help-block">Peso máximo 2 MB. Formato JPG o PNG.</p>
-                  <img src="vistas/img/productos/default/anonymous.png" class="img-thumbnail previewImagenEditar" width="100px" id="imagenActualImg">
+                  <img src="views/img/productos/default/anonymous.png" class="img-thumbnail previewImagenEditar" width="100px" id="imagenActualImg">
                 </div>
 
               </div>
@@ -437,7 +437,7 @@ $(".tablas").on("click", ".btnEditarProducto", function(){
       if(respuesta["imagen"] != "" && respuesta["imagen"] != null){
         $("#imagenActualImg").attr("src", respuesta["imagen"]);
       }else{
-        $("#imagenActualImg").attr("src", "vistas/img/productos/default/anonymous.png");
+        $("#imagenActualImg").attr("src", "views/img/productos/default/anonymous.png");
       }
 
     }

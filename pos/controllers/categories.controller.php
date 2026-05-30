@@ -6,11 +6,11 @@ class CategoryController{
 	SHOW CATEGORIES
 	=============================================*/
 
-	static public function ctrShowCategories($item, $valor){
+	static public function ctrShowCategories($item, $value){
 
 		$table = "categorias";
 
-		$response = CategoryModel::mdlShowCategories($table, $item, $valor);
+		$response = CategoryModel::mdlShowCategories($table, $item, $value);
 
 		return $response;
 

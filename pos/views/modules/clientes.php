@@ -173,7 +173,7 @@ ADD CLIENT MODAL
                   </div>
                 </div>
 
-                <!-- DATE OF BIRTH -->
+                <!-- BIRTH DATE -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -257,7 +257,7 @@ EDIT CLIENT MODAL
                   </div>
                 </div>
 
-                <!-- DATE OF BIRTH -->
+                <!-- BIRTH DATE -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
