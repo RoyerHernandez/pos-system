@@ -33,6 +33,25 @@ class ClientModel{
 	}
 
 	/*=============================================
+	SEARCH CLIENTS (autocomplete for POS)
+	=============================================*/
+
+	static public function mdlSearchClients($table, $search){
+
+		$search = "%".$search."%";
+
+		$stmt = Connection::connect()->prepare("SELECT id, nombre, documento, telefono, email FROM $table WHERE estado = 1 AND (nombre LIKE :search OR documento LIKE :search2) ORDER BY nombre ASC LIMIT 10");
+
+		$stmt -> bindParam(":search", $search, PDO::PARAM_STR);
+		$stmt -> bindParam(":search2", $search, PDO::PARAM_STR);
+
+		$stmt -> execute();
+
+		return $stmt -> fetchAll();
+
+	}
+
+	/*=============================================
 	INSERT CLIENT
 	=============================================*/
 

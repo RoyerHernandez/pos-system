@@ -117,6 +117,43 @@ class ProductModel{
 	}
 
 	/*=============================================
+	SEARCH PRODUCTS (autocomplete for POS)
+	=============================================*/
+
+	static public function mdlSearchProducts($table, $search){
+
+		$search = "%".$search."%";
+
+		$stmt = Connection::connect()->prepare("SELECT p.id, p.codigo, p.codigo_barras, p.descripcion, p.precio_venta, p.stock, p.imagen, c.nombre as categoria FROM $table p LEFT JOIN categorias c ON p.id_categoria = c.id WHERE p.estado = 1 AND (p.descripcion LIKE :search OR p.codigo LIKE :search2 OR p.codigo_barras LIKE :search3) LIMIT 10");
+
+		$stmt -> bindParam(":search", $search, PDO::PARAM_STR);
+		$stmt -> bindParam(":search2", $search, PDO::PARAM_STR);
+		$stmt -> bindParam(":search3", $search, PDO::PARAM_STR);
+
+		$stmt -> execute();
+
+		return $stmt -> fetchAll();
+
+	}
+
+	/*=============================================
+	GET PRODUCT BY CODE (barcode scanner)
+	=============================================*/
+
+	static public function mdlGetProductByCode($table, $code){
+
+		$stmt = Connection::connect()->prepare("SELECT p.*, c.nombre as categoria FROM $table p LEFT JOIN categorias c ON p.id_categoria = c.id WHERE p.estado = 1 AND (p.codigo = :code OR p.codigo_barras = :code2) LIMIT 1");
+
+		$stmt -> bindParam(":code", $code, PDO::PARAM_STR);
+		$stmt -> bindParam(":code2", $code, PDO::PARAM_STR);
+
+		$stmt -> execute();
+
+		return $stmt -> fetch();
+
+	}
+
+	/*=============================================
 	UPDATE STOCK
 	=============================================*/
 
