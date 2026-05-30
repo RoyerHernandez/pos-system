@@ -66,8 +66,8 @@ session_start();
   <script src="views/bower_components/datatables.net-bs/js/dataTables.responsive.min.js"></script>
   <script src="views/bower_components/datatables.net-bs/js/responsive.bootstrap.min.js"></script>
 
-  <!-- Chart.js -->
-  <script src="views/bower_components/chart.js/Chart.min.js"></script>
+  <!-- Chart.js v2.9.4 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 
   <!-- SweetAlert 2 -->
   <script src="views/plugins/sweetalert2/sweetalert2.all.js"></script>
