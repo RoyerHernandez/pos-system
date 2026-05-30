@@ -110,6 +110,7 @@ DOCUMENT BODY
          $_GET["ruta"] == "clientes" ||
          $_GET["ruta"] == "ventas" ||
          $_GET["ruta"] == "crear-venta" ||
+         $_GET["ruta"] == "caja" ||
          $_GET["ruta"] == "reportes" ||
          $_GET["ruta"] == "salir"){
 
@@ -146,6 +147,7 @@ DOCUMENT BODY
 
 <script src="views/js/plantilla.js"></script>
 <script src="views/js/usuarios.js"></script>
+<script src="views/js/sales.js"></script>
 
 </body>
 </html>
