@@ -1,75 +1,75 @@
 <?php
 
-class ControladorProductos{
+class ProductController{
 
 	/*=============================================
-	MOSTRAR PRODUCTOS
+	SHOW PRODUCTS
 	=============================================*/
 
-	static public function ctrMostrarProductos($item, $valor){
+	static public function ctrShowProducts($item, $value){
 
-		$tabla = "productos";
+		$table = "productos";
 
-		$respuesta = ModeloProductos::mdlMostrarProductos($tabla, $item, $valor);
+		$response = ProductModel::mdlShowProducts($table, $item, $value);
 
-		return $respuesta;
+		return $response;
 
 	}
 
 	/*=============================================
-	CREAR PRODUCTO
+	CREATE PRODUCT
 	=============================================*/
 
-	static public function ctrCrearProducto(){
+	static public function ctrCreateProduct(){
 
 		if(isset($_POST["nuevoCodigo"])){
 
 			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevaDescripcion"])){
 
 				/*=============================================
-				VALIDAR IMAGEN
+				VALIDATE IMAGE
 				=============================================*/
 
-				$ruta = "";
+				$path = "";
 
 				if(isset($_FILES["nuevaImagen"]["tmp_name"]) && !empty($_FILES["nuevaImagen"]["tmp_name"])){
 
-					list($ancho, $alto) = getimagesize($_FILES["nuevaImagen"]["tmp_name"]);
+					list($width, $height) = getimagesize($_FILES["nuevaImagen"]["tmp_name"]);
 
-					$nuevoAncho = 500;
-					$nuevoAlto = 500;
+					$newWidth = 500;
+					$newHeight = 500;
 
-					$directorio = "vistas/img/productos/".$_POST["nuevoCodigo"];
+					$directory = "views/img/productos/".$_POST["nuevoCodigo"];
 
-					mkdir($directorio, 0755);
+					mkdir($directory, 0755);
 
 					if($_FILES["nuevaImagen"]["type"] == "image/jpeg"){
 
-						$aleatorio = mt_rand(100,999);
-						$ruta = "vistas/img/productos/".$_POST["nuevoCodigo"]."/".$aleatorio.".jpg";
-						$origen = imagecreatefromjpeg($_FILES["nuevaImagen"]["tmp_name"]);
-						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-						imagejpeg($destino, $ruta);
+						$random = mt_rand(100,999);
+						$path = "views/img/productos/".$_POST["nuevoCodigo"]."/".$random.".jpg";
+						$source = imagecreatefromjpeg($_FILES["nuevaImagen"]["tmp_name"]);
+						$destination = imagecreatetruecolor($newWidth, $newHeight);
+						imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+						imagejpeg($destination, $path);
 
 					}
 
 					if($_FILES["nuevaImagen"]["type"] == "image/png"){
 
-						$aleatorio = mt_rand(100,999);
-						$ruta = "vistas/img/productos/".$_POST["nuevoCodigo"]."/".$aleatorio.".png";
-						$origen = imagecreatefrompng($_FILES["nuevaImagen"]["tmp_name"]);
-						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-						imagepng($destino, $ruta);
+						$random = mt_rand(100,999);
+						$path = "views/img/productos/".$_POST["nuevoCodigo"]."/".$random.".png";
+						$source = imagecreatefrompng($_FILES["nuevaImagen"]["tmp_name"]);
+						$destination = imagecreatetruecolor($newWidth, $newHeight);
+						imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+						imagepng($destination, $path);
 
 					}
 
 				}
 
-				$tabla = "productos";
+				$table = "productos";
 
-				$datos = array("codigo" => $_POST["nuevoCodigo"],
+				$data = array("codigo" => $_POST["nuevoCodigo"],
 					           "codigo_barras" => $_POST["nuevoCodigoBarras"],
 					           "descripcion" => $_POST["nuevaDescripcion"],
 					           "id_categoria" => $_POST["nuevaCategoria"],
@@ -77,11 +77,11 @@ class ControladorProductos{
 					           "precio_venta" => $_POST["nuevoPrecioVenta"],
 					           "stock" => $_POST["nuevoStock"],
 					           "stock_minimo" => $_POST["nuevoStockMinimo"],
-					           "imagen" => $ruta);
+					           "imagen" => $path);
 
-				$respuesta = ModeloProductos::mdlIngresarProducto($tabla, $datos);
+				$response = ProductModel::mdlInsertProduct($table, $data);
 
-				if($respuesta == "ok"){
+				if($response == "ok"){
 
 					echo '<script>
 
@@ -136,59 +136,59 @@ class ControladorProductos{
 	}
 
 	/*=============================================
-	EDITAR PRODUCTO
+	UPDATE PRODUCT
 	=============================================*/
 
-	static public function ctrEditarProducto(){
+	static public function ctrUpdateProduct(){
 
 		if(isset($_POST["editarCodigo"])){
 
 			/*=============================================
-			VALIDAR IMAGEN
+			VALIDATE IMAGE
 			=============================================*/
 
-			$ruta = $_POST["imagenActual"];
+			$path = $_POST["imagenActual"];
 
 			if(isset($_FILES["editarImagen"]["tmp_name"]) && !empty($_FILES["editarImagen"]["tmp_name"])){
 
-				list($ancho, $alto) = getimagesize($_FILES["editarImagen"]["tmp_name"]);
+				list($width, $height) = getimagesize($_FILES["editarImagen"]["tmp_name"]);
 
-				$nuevoAncho = 500;
-				$nuevoAlto = 500;
+				$newWidth = 500;
+				$newHeight = 500;
 
-				$directorio = "vistas/img/productos/".$_POST["editarCodigo"];
+				$directory = "views/img/productos/".$_POST["editarCodigo"];
 
-				if(!is_dir($directorio)){
-					mkdir($directorio, 0755);
+				if(!is_dir($directory)){
+					mkdir($directory, 0755);
 				}
 
 				if($_FILES["editarImagen"]["type"] == "image/jpeg"){
 
-					$aleatorio = mt_rand(100,999);
-					$ruta = "vistas/img/productos/".$_POST["editarCodigo"]."/".$aleatorio.".jpg";
-					$origen = imagecreatefromjpeg($_FILES["editarImagen"]["tmp_name"]);
-					$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-					imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-					imagejpeg($destino, $ruta);
+					$random = mt_rand(100,999);
+					$path = "views/img/productos/".$_POST["editarCodigo"]."/".$random.".jpg";
+					$source = imagecreatefromjpeg($_FILES["editarImagen"]["tmp_name"]);
+					$destination = imagecreatetruecolor($newWidth, $newHeight);
+					imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+					imagejpeg($destination, $path);
 
 				}
 
 				if($_FILES["editarImagen"]["type"] == "image/png"){
 
-					$aleatorio = mt_rand(100,999);
-					$ruta = "vistas/img/productos/".$_POST["editarCodigo"]."/".$aleatorio.".png";
-					$origen = imagecreatefrompng($_FILES["editarImagen"]["tmp_name"]);
-					$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
-					imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
-					imagepng($destino, $ruta);
+					$random = mt_rand(100,999);
+					$path = "views/img/productos/".$_POST["editarCodigo"]."/".$random.".png";
+					$source = imagecreatefrompng($_FILES["editarImagen"]["tmp_name"]);
+					$destination = imagecreatetruecolor($newWidth, $newHeight);
+					imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+					imagepng($destination, $path);
 
 				}
 
 			}
 
-			$tabla = "productos";
+			$table = "productos";
 
-			$datos = array("id" => $_POST["idProductoEditar"],
+			$data = array("id" => $_POST["idProductoEditar"],
 				           "codigo" => $_POST["editarCodigo"],
 				           "codigo_barras" => $_POST["editarCodigoBarras"],
 				           "descripcion" => $_POST["editarDescripcion"],
@@ -197,11 +197,11 @@ class ControladorProductos{
 				           "precio_venta" => $_POST["editarPrecioVenta"],
 				           "stock" => $_POST["editarStock"],
 				           "stock_minimo" => $_POST["editarStockMinimo"],
-				           "imagen" => $ruta);
+				           "imagen" => $path);
 
-			$respuesta = ModeloProductos::mdlEditarProducto($tabla, $datos);
+			$response = ProductModel::mdlUpdateProduct($table, $data);
 
-			if($respuesta == "ok"){
+			if($response == "ok"){
 
 				echo '<script>
 
@@ -231,21 +231,21 @@ class ControladorProductos{
 	}
 
 	/*=============================================
-	BORRAR PRODUCTO
+	DELETE PRODUCT
 	=============================================*/
 
-	static public function ctrBorrarProducto(){
+	static public function ctrDeleteProduct(){
 
 		if(isset($_GET["idProducto"])){
 
-			$tabla = "productos";
+			$table = "productos";
 
-			$datos = array("id" => $_GET["idProducto"],
+			$data = array("id" => $_GET["idProducto"],
 				           "estado" => 0);
 
-			$respuesta = ModeloProductos::mdlBorrarProducto($tabla, $datos);
+			$response = ProductModel::mdlDeleteProduct($table, $data);
 
-			if($respuesta == "ok"){
+			if($response == "ok"){
 
 				echo '<script>
 

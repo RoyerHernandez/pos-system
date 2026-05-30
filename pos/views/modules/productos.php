@@ -1,7 +1,7 @@
 <?php
 
-$productos = ControladorProductos::ctrMostrarProductos(null, null);
-$categorias = ControladorCategorias::ctrMostrarCategorias(null, null);
+$products = ProductController::ctrShowProducts(null, null);
+$categories = CategoryController::ctrShowCategories(null, null);
 
 ?>
 
@@ -55,31 +55,31 @@ $categorias = ControladorCategorias::ctrMostrarCategorias(null, null);
 
             <?php
 
-            $contador = 1;
+            $counter = 1;
 
-            foreach($productos as $key => $valor){
+            foreach($products as $key => $value){
 
               echo '<tr>
 
-                <td>'.$contador.'</td>
-                <td><img src="'.(!empty($valor["imagen"]) ? $valor["imagen"] : 'vistas/img/productos/default/anonymous.png').'" class="img-thumbnail" width="40px"></td>
-                <td>'.$valor["codigo"].'</td>
-                <td>'.$valor["descripcion"].'</td>
-                <td><span class="label label-info">'.$valor["categoria"].'</span></td>
-                <td>$'.number_format($valor["precio_compra"], 2).'</td>
-                <td>$'.number_format($valor["precio_venta"], 2).'</td>
+                <td>'.$counter.'</td>
+                <td><img src="'.(!empty($value["imagen"]) ? $value["imagen"] : 'views/img/productos/default/anonymous.png').'" class="img-thumbnail" width="40px"></td>
+                <td>'.$value["codigo"].'</td>
+                <td>'.$value["descripcion"].'</td>
+                <td><span class="label label-info">'.$value["categoria"].'</span></td>
+                <td>$'.number_format($value["precio_compra"], 2).'</td>
+                <td>$'.number_format($value["precio_venta"], 2).'</td>
                 <td>';
 
-              if($valor["stock"] <= $valor["stock_minimo"]){
-                echo '<span class="badge bg-red">'.$valor["stock"].'</span>';
+              if($value["stock"] <= $value["stock_minimo"]){
+                echo '<span class="badge bg-red">'.$value["stock"].'</span>';
               }else{
-                echo '<span class="badge bg-green">'.$valor["stock"].'</span>';
+                echo '<span class="badge bg-green">'.$value["stock"].'</span>';
               }
 
               echo '</td>
                 <td>';
 
-              if($valor["estado"] == 1){
+              if($value["estado"] == 1){
                 echo '<button class="btn btn-success btn-xs">Activado</button>';
               }else{
                 echo '<button class="btn btn-danger btn-xs">Inactivo</button>';
@@ -90,9 +90,9 @@ $categorias = ControladorCategorias::ctrMostrarCategorias(null, null);
 
                   <div class="btn-group">
 
-                    <button class="btn btn-warning btnEditarProducto" data-toggle="modal" data-target="#modalEditarProducto" idProducto="'.$valor["id"].'"><i class="fa fa-pencil"></i></button>
+                    <button class="btn btn-warning btnEditarProducto" data-toggle="modal" data-target="#modalEditarProducto" idProducto="'.$value["id"].'"><i class="fa fa-pencil"></i></button>
 
-                    <a class="btn btn-danger btnEliminarProducto" idProducto="'.$valor["id"].'"><i class="fa fa-times"></i></a>
+                    <a class="btn btn-danger btnEliminarProducto" idProducto="'.$value["id"].'"><i class="fa fa-times"></i></a>
 
                   </div>
 
@@ -100,7 +100,7 @@ $categorias = ControladorCategorias::ctrMostrarCategorias(null, null);
 
               </tr>';
 
-              $contador++;
+              $counter++;
 
             }
 
@@ -119,7 +119,7 @@ $categorias = ControladorCategorias::ctrMostrarCategorias(null, null);
 </div>
 
 <!--=====================================
-MODAL AGREGAR PRODUCTO
+ADD PRODUCT MODAL
 ======================================-->
 
 <div class="modal fade" id="modalAgregarProducto">
@@ -137,7 +137,7 @@ MODAL AGREGAR PRODUCTO
 
               <div class="box-body">
 
-                <!-- CODIGO -->
+                <!-- CODE -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-code"></i></span>
@@ -145,7 +145,7 @@ MODAL AGREGAR PRODUCTO
                   </div>
                 </div>
 
-                <!-- CODIGO DE BARRAS -->
+                <!-- BARCODE -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
@@ -153,7 +153,7 @@ MODAL AGREGAR PRODUCTO
                   </div>
                 </div>
 
-                <!-- DESCRIPCION -->
+                <!-- DESCRIPTION -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-product-hunt"></i></span>
@@ -161,7 +161,7 @@ MODAL AGREGAR PRODUCTO
                   </div>
                 </div>
 
-                <!-- CATEGORIA -->
+                <!-- CATEGORY -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-th"></i></span>
@@ -169,10 +169,10 @@ MODAL AGREGAR PRODUCTO
                       <option value="">Seleccionar categoría</option>
                       <?php
 
-                      foreach($categorias as $key => $valor){
+                      foreach($categories as $key => $value){
 
-                        if($valor["estado"] == 1){
-                          echo '<option value="'.$valor["id"].'">'.$valor["nombre"].'</option>';
+                        if($value["estado"] == 1){
+                          echo '<option value="'.$value["id"].'">'.$value["nombre"].'</option>';
                         }
 
                       }
@@ -182,7 +182,7 @@ MODAL AGREGAR PRODUCTO
                   </div>
                 </div>
 
-                <!-- PRECIOS -->
+                <!-- PRICES -->
                 <div class="row">
 
                   <div class="col-xs-6">
@@ -228,12 +228,12 @@ MODAL AGREGAR PRODUCTO
 
                 </div>
 
-                <!-- IMAGEN -->
+                <!-- IMAGE -->
                 <div class="form-group">
                   <div class="panel">SUBIR IMAGEN</div>
                   <input type="file" class="nuevaImagen" name="nuevaImagen" accept="image/*">
                   <p class="help-block">Peso máximo 2 MB. Formato JPG o PNG.</p>
-                  <img src="vistas/img/productos/default/anonymous.png" class="img-thumbnail previewImagen" width="100px">
+                  <img src="views/img/productos/default/anonymous.png" class="img-thumbnail previewImagen" width="100px">
                 </div>
 
               </div>
@@ -252,7 +252,7 @@ MODAL AGREGAR PRODUCTO
 </div>
 
 <!--=====================================
-MODAL EDITAR PRODUCTO
+EDIT PRODUCT MODAL
 ======================================-->
 
 <div class="modal fade" id="modalEditarProducto">
@@ -273,7 +273,7 @@ MODAL EDITAR PRODUCTO
                 <input type="hidden" name="idProductoEditar" id="idProductoEditar">
                 <input type="hidden" name="imagenActual" id="imagenActual">
 
-                <!-- CODIGO -->
+                <!-- CODE -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-code"></i></span>
@@ -281,7 +281,7 @@ MODAL EDITAR PRODUCTO
                   </div>
                 </div>
 
-                <!-- CODIGO DE BARRAS -->
+                <!-- BARCODE -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
@@ -289,7 +289,7 @@ MODAL EDITAR PRODUCTO
                   </div>
                 </div>
 
-                <!-- DESCRIPCION -->
+                <!-- DESCRIPTION -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-product-hunt"></i></span>
@@ -297,17 +297,17 @@ MODAL EDITAR PRODUCTO
                   </div>
                 </div>
 
-                <!-- CATEGORIA -->
+                <!-- CATEGORY -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-th"></i></span>
                     <select class="form-control input-lg" name="editarCategoria" id="editarCategoria" required>
                       <?php
 
-                      foreach($categorias as $key => $valor){
+                      foreach($categories as $key => $value){
 
-                        if($valor["estado"] == 1){
-                          echo '<option value="'.$valor["id"].'">'.$valor["nombre"].'</option>';
+                        if($value["estado"] == 1){
+                          echo '<option value="'.$value["id"].'">'.$value["nombre"].'</option>';
                         }
 
                       }
@@ -317,7 +317,7 @@ MODAL EDITAR PRODUCTO
                   </div>
                 </div>
 
-                <!-- PRECIOS -->
+                <!-- PRICES -->
                 <div class="row">
 
                   <div class="col-xs-6">
@@ -363,12 +363,12 @@ MODAL EDITAR PRODUCTO
 
                 </div>
 
-                <!-- IMAGEN -->
+                <!-- IMAGE -->
                 <div class="form-group">
                   <div class="panel">CAMBIAR IMAGEN</div>
                   <input type="file" class="editarImagen" name="editarImagen" accept="image/*">
                   <p class="help-block">Peso máximo 2 MB. Formato JPG o PNG.</p>
-                  <img src="vistas/img/productos/default/anonymous.png" class="img-thumbnail previewImagenEditar" width="100px" id="imagenActualImg">
+                  <img src="views/img/productos/default/anonymous.png" class="img-thumbnail previewImagenEditar" width="100px" id="imagenActualImg">
                 </div>
 
               </div>
@@ -388,21 +388,21 @@ MODAL EDITAR PRODUCTO
 
 <?php
 
-$crearProducto = new ControladorProductos();
-$crearProducto -> ctrCrearProducto();
+$createProduct = new ProductController();
+$createProduct -> ctrCreateProduct();
 
-$editarProducto = new ControladorProductos();
-$editarProducto -> ctrEditarProducto();
+$updateProduct = new ProductController();
+$updateProduct -> ctrUpdateProduct();
 
-$borrarProducto = new ControladorProductos();
-$borrarProducto -> ctrBorrarProducto();
+$deleteProduct = new ProductController();
+$deleteProduct -> ctrDeleteProduct();
 
 ?>
 
 <script>
 
 /*=============================================
-EDITAR PRODUCTO - Cargar datos en modal via AJAX
+EDIT PRODUCT - Load data into modal via AJAX
 =============================================*/
 
 $(".tablas").on("click", ".btnEditarProducto", function(){
@@ -437,7 +437,7 @@ $(".tablas").on("click", ".btnEditarProducto", function(){
       if(respuesta["imagen"] != "" && respuesta["imagen"] != null){
         $("#imagenActualImg").attr("src", respuesta["imagen"]);
       }else{
-        $("#imagenActualImg").attr("src", "vistas/img/productos/default/anonymous.png");
+        $("#imagenActualImg").attr("src", "views/img/productos/default/anonymous.png");
       }
 
     }
@@ -447,7 +447,7 @@ $(".tablas").on("click", ".btnEditarProducto", function(){
 });
 
 /*=============================================
-ELIMINAR PRODUCTO
+DELETE PRODUCT
 =============================================*/
 
 $(".tablas").on("click", ".btnEliminarProducto", function(){
@@ -478,7 +478,7 @@ $(".tablas").on("click", ".btnEliminarProducto", function(){
 });
 
 /*=============================================
-PREVIEW DE IMAGEN AL SELECCIONAR
+IMAGE PREVIEW ON SELECTION
 =============================================*/
 
 $(".nuevaImagen").change(function(){

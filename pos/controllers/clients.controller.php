@@ -1,45 +1,45 @@
 <?php
 
-class ControladorClientes{
+class ClientController{
 
 	/*=============================================
-	MOSTRAR CLIENTES
+	SHOW CLIENTS
 	=============================================*/
 
-	static public function ctrMostrarClientes($item, $valor){
+	static public function ctrShowClients($item, $value){
 
-		$tabla = "clientes";
+		$table = "clientes";
 
-		$respuesta = ModeloClientes::mdlMostrarClientes($tabla, $item, $valor);
+		$response = ClientModel::mdlShowClients($table, $item, $value);
 
-		return $respuesta;
+		return $response;
 
 	}
 
 	/*=============================================
-	CREAR CLIENTE
+	CREATE CLIENT
 	=============================================*/
 
-	static public function ctrCrearCliente(){
+	static public function ctrCreateClient(){
 
 		if(isset($_POST["nuevoCliente"])){
 
 			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevoCliente"])){
 
-				$tabla = "clientes";
+				$table = "clientes";
 
-				$fechaNacimiento = !empty($_POST["nuevaFechaNacimiento"]) ? $_POST["nuevaFechaNacimiento"] : null;
+				$birthDate = !empty($_POST["nuevaFechaNacimiento"]) ? $_POST["nuevaFechaNacimiento"] : null;
 
-				$datos = array("nombre" => $_POST["nuevoCliente"],
+				$data = array("nombre" => $_POST["nuevoCliente"],
 					           "documento" => $_POST["nuevoDocumento"],
 					           "email" => $_POST["nuevoEmail"],
 					           "telefono" => $_POST["nuevoTelefono"],
 					           "direccion" => $_POST["nuevaDireccion"],
-					           "fecha_nacimiento" => $fechaNacimiento);
+					           "fecha_nacimiento" => $birthDate);
 
-				$respuesta = ModeloClientes::mdlIngresarCliente($tabla, $datos);
+				$response = ClientModel::mdlInsertClient($table, $data);
 
-				if($respuesta == "ok"){
+				if($response == "ok"){
 
 					echo '<script>
 
@@ -94,30 +94,30 @@ class ControladorClientes{
 	}
 
 	/*=============================================
-	EDITAR CLIENTE
+	UPDATE CLIENT
 	=============================================*/
 
-	static public function ctrEditarCliente(){
+	static public function ctrUpdateClient(){
 
 		if(isset($_POST["editarCliente"])){
 
 			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarCliente"])){
 
-				$tabla = "clientes";
+				$table = "clientes";
 
-				$fechaNacimiento = !empty($_POST["editarFechaNacimiento"]) ? $_POST["editarFechaNacimiento"] : null;
+				$birthDate = !empty($_POST["editarFechaNacimiento"]) ? $_POST["editarFechaNacimiento"] : null;
 
-				$datos = array("id" => $_POST["idClienteEditar"],
+				$data = array("id" => $_POST["idClienteEditar"],
 					           "nombre" => $_POST["editarCliente"],
 					           "documento" => $_POST["editarDocumento"],
 					           "email" => $_POST["editarEmail"],
 					           "telefono" => $_POST["editarTelefono"],
 					           "direccion" => $_POST["editarDireccion"],
-					           "fecha_nacimiento" => $fechaNacimiento);
+					           "fecha_nacimiento" => $birthDate);
 
-				$respuesta = ModeloClientes::mdlEditarCliente($tabla, $datos);
+				$response = ClientModel::mdlUpdateClient($table, $data);
 
-				if($respuesta == "ok"){
+				if($response == "ok"){
 
 					echo '<script>
 
@@ -172,21 +172,21 @@ class ControladorClientes{
 	}
 
 	/*=============================================
-	BORRAR CLIENTE
+	DELETE CLIENT
 	=============================================*/
 
-	static public function ctrBorrarCliente(){
+	static public function ctrDeleteClient(){
 
 		if(isset($_GET["idCliente"])){
 
-			$tabla = "clientes";
+			$table = "clientes";
 
-			$datos = array("id" => $_GET["idCliente"],
+			$data = array("id" => $_GET["idCliente"],
 				           "estado" => 0);
 
-			$respuesta = ModeloClientes::mdlBorrarCliente($tabla, $datos);
+			$response = ClientModel::mdlDeleteClient($table, $data);
 
-			if($respuesta == "ok"){
+			if($response == "ok"){
 
 				echo '<script>
 

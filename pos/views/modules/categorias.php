@@ -1,6 +1,6 @@
 <?php
 
-$categorias = ControladorCategorias::ctrMostrarCategorias(null, null);
+$categories = CategoryController::ctrShowCategories(null, null);
 
 ?>
 
@@ -49,21 +49,21 @@ $categorias = ControladorCategorias::ctrMostrarCategorias(null, null);
 
             <?php
 
-            $contador = 1;
+            $counter = 1;
 
-            foreach($categorias as $key => $valor){
+            foreach($categories as $key => $value){
 
               echo '<tr>
 
-                <td>'.$contador.'</td>
-                <td>'.$valor["nombre"].'</td>
-                <td>'.$valor["descripcion"].'</td>
+                <td>'.$counter.'</td>
+                <td>'.$value["nombre"].'</td>
+                <td>'.$value["descripcion"].'</td>
                 <td>';
 
-              if($valor["estado"] == 1){
-                echo '<button class="btn btn-success btn-xs">Activada</button>';
+              if($value["estado"] == 1){
+                echo '<button class="btn btn-success btn-xs">Activado</button>';
               }else{
-                echo '<button class="btn btn-danger btn-xs">Inactiva</button>';
+                echo '<button class="btn btn-danger btn-xs">Inactivo</button>';
               }
 
               echo '</td>
@@ -71,9 +71,9 @@ $categorias = ControladorCategorias::ctrMostrarCategorias(null, null);
 
                   <div class="btn-group">
 
-                    <button class="btn btn-warning btnEditarCategoria" data-toggle="modal" data-target="#modalEditarCategoria" idCategoria="'.$valor["id"].'" catNombre="'.$valor["nombre"].'" catDescripcion="'.$valor["descripcion"].'"><i class="fa fa-pencil"></i></button>
+                    <button class="btn btn-warning btnEditarCategoria" data-toggle="modal" data-target="#modalEditarCategoria" idCategoria="'.$value["id"].'" nombre="'.$value["nombre"].'" descripcion="'.$value["descripcion"].'"><i class="fa fa-pencil"></i></button>
 
-                    <a class="btn btn-danger btnEliminarCategoria" idCategoria="'.$valor["id"].'"><i class="fa fa-times"></i></a>
+                    <a class="btn btn-danger btnEliminarCategoria" idCategoria="'.$value["id"].'"><i class="fa fa-times"></i></a>
 
                   </div>
 
@@ -81,7 +81,7 @@ $categorias = ControladorCategorias::ctrMostrarCategorias(null, null);
 
               </tr>';
 
-              $contador++;
+              $counter++;
 
             }
 
@@ -100,7 +100,7 @@ $categorias = ControladorCategorias::ctrMostrarCategorias(null, null);
 </div>
 
 <!--=====================================
-MODAL AGREGAR CATEGORIA
+ADD CATEGORY MODAL
 ======================================-->
 
 <div class="modal fade" id="modalAgregarCategoria">
@@ -118,6 +118,7 @@ MODAL AGREGAR CATEGORIA
 
               <div class="box-body">
 
+                <!-- NAME INPUT -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-th"></i></span>
@@ -125,6 +126,7 @@ MODAL AGREGAR CATEGORIA
                   </div>
                 </div>
 
+                <!-- DESCRIPTION INPUT -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-comment"></i></span>
@@ -148,7 +150,7 @@ MODAL AGREGAR CATEGORIA
 </div>
 
 <!--=====================================
-MODAL EDITAR CATEGORIA
+EDIT CATEGORY MODAL
 ======================================-->
 
 <div class="modal fade" id="modalEditarCategoria">
@@ -168,17 +170,19 @@ MODAL EDITAR CATEGORIA
 
                 <input type="hidden" name="idCategoriaEditar" id="idCategoriaEditar">
 
+                <!-- NAME INPUT -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-th"></i></span>
-                    <input type="text" class="form-control input-lg" name="editarCategoria" id="editarCategoria" placeholder="Nombre de la categoría" required>
+                    <input type="text" class="form-control input-lg" name="editarCategoria" id="editarCategoria" placeholder="Nombre" required>
                   </div>
                 </div>
 
+                <!-- DESCRIPTION INPUT -->
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-comment"></i></span>
-                    <input type="text" class="form-control input-lg" name="editarDescripcionCat" id="editarDescripcionCat" placeholder="Descripción (opcional)">
+                    <input type="text" class="form-control input-lg" name="editarDescripcionCat" id="editarDescripcionCat" placeholder="Descripción">
                   </div>
                 </div>
 
@@ -199,37 +203,37 @@ MODAL EDITAR CATEGORIA
 
 <?php
 
-$crearCategoria = new ControladorCategorias();
-$crearCategoria -> ctrCrearCategoria();
+$createCategory = new CategoryController();
+$createCategory -> ctrCreateCategory();
 
-$editarCategoria = new ControladorCategorias();
-$editarCategoria -> ctrEditarCategoria();
+$updateCategory = new CategoryController();
+$updateCategory -> ctrUpdateCategory();
 
-$borrarCategoria = new ControladorCategorias();
-$borrarCategoria -> ctrBorrarCategoria();
+$deleteCategory = new CategoryController();
+$deleteCategory -> ctrDeleteCategory();
 
 ?>
 
 <script>
 
 /*=============================================
-EDITAR CATEGORIA - Cargar datos en modal
+EDIT CATEGORY - Load data into modal
 =============================================*/
 
 $(".tablas").on("click", ".btnEditarCategoria", function(){
 
   var idCategoria = $(this).attr("idCategoria");
-  var catNombre = $(this).attr("catNombre");
-  var catDescripcion = $(this).attr("catDescripcion");
+  var nombre = $(this).attr("nombre");
+  var descripcion = $(this).attr("descripcion");
 
   $("#idCategoriaEditar").val(idCategoria);
-  $("#editarCategoria").val(catNombre);
-  $("#editarDescripcionCat").val(catDescripcion);
+  $("#editarCategoria").val(nombre);
+  $("#editarDescripcionCat").val(descripcion);
 
 });
 
 /*=============================================
-ELIMINAR CATEGORIA
+DELETE CATEGORY
 =============================================*/
 
 $(".tablas").on("click", ".btnEliminarCategoria", function(){

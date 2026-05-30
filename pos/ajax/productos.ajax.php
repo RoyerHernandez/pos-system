@@ -2,21 +2,21 @@
 
 session_start();
 
-if(!isset($_SESSION["iniciarSesion"]) || $_SESSION["iniciarSesion"] != "ok"){
-	echo json_encode(array("error" => "No autorizado"));
+if(!isset($_SESSION["loggedIn"]) || $_SESSION["loggedIn"] != "ok"){
+	echo json_encode(array("error" => "Unauthorized"));
 	return;
 }
 
-require_once "../modelos/conexion.php";
-require_once "../modelos/productos.modelo.php";
+require_once "../models/connection.php";
+require_once "../models/products.model.php";
 
 if(isset($_POST["idProducto"])){
 
 	$item = "p.id";
-	$valor = $_POST["idProducto"];
+	$value = $_POST["idProducto"];
 
-	$respuesta = ModeloProductos::mdlMostrarProductos("productos", $item, $valor);
+	$response = ProductModel::mdlShowProducts("productos", $item, $value);
 
-	echo json_encode($respuesta);
+	echo json_encode($response);
 
 }
