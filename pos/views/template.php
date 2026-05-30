@@ -66,6 +66,9 @@ session_start();
   <script src="views/bower_components/datatables.net-bs/js/dataTables.responsive.min.js"></script>
   <script src="views/bower_components/datatables.net-bs/js/responsive.bootstrap.min.js"></script>
 
+  <!-- Chart.js v2.9.4 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+
   <!-- SweetAlert 2 -->
   <script src="views/plugins/sweetalert2/sweetalert2.all.js"></script>
   <!-- By default SweetAlert2 doesn't support IE. To enable IE 11 support, include Promise polyfill:-->
@@ -149,6 +152,7 @@ DOCUMENT BODY
 <script src="views/js/usuarios.js"></script>
 <script src="views/js/sales.js"></script>
 <script src="views/js/sales-admin.js"></script>
+<script src="views/js/dashboard.js"></script>
 
 </body>
 </html>
