@@ -59,6 +59,17 @@
 
 			</li>
 
+			<li>
+
+				<a href="caja">
+
+					<i class="fa fa-desktop"></i>
+					<span>Caja</span>
+
+				</a>
+
+			</li>
+
 			<li class="treeview">
 
 				<a href="#">
