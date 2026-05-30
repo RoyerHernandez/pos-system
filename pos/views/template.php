@@ -106,22 +106,49 @@ DOCUMENT BODY
 
     if(isset($_GET["ruta"])){
 
-      if($_GET["ruta"] == "inicio" ||
-         $_GET["ruta"] == "usuarios" ||
-         $_GET["ruta"] == "categorias" ||
-         $_GET["ruta"] == "productos" ||
-         $_GET["ruta"] == "clientes" ||
-         $_GET["ruta"] == "ventas" ||
-         $_GET["ruta"] == "crear-venta" ||
-         $_GET["ruta"] == "caja" ||
-         $_GET["ruta"] == "reportes" ||
-         $_GET["ruta"] == "salir"){
+      /*=============================================
+      ROLE-BASED ACCESS CONTROL
+      =============================================*/
 
-        include "modules/".$_GET["ruta"].".php";
+      $role = isset($_SESSION["role"]) ? $_SESSION["role"] : "Vendedor";
+
+      // Routes accessible by all roles
+      $allRoles = array("inicio", "crear-venta", "caja", "salir");
+
+      // Routes for Admin and Especial
+      $adminEspecial = array("productos", "clientes", "reportes", "ventas");
+
+      // Routes for Admin only
+      $adminOnly = array("usuarios", "categorias");
+
+      $route = $_GET["ruta"];
+      $allowed = false;
+
+      if(in_array($route, $allRoles)){
+
+        $allowed = true;
+
+      }else if(in_array($route, $adminEspecial)){
+
+        if($role == "Administrador" || $role == "Especial"){
+          $allowed = true;
+        }
+
+      }else if(in_array($route, $adminOnly)){
+
+        if($role == "Administrador"){
+          $allowed = true;
+        }
+
+      }
+
+      if($allowed){
+
+        include "modules/".$route.".php";
 
       }else{
 
-        include "modules/404.php";
+        include "modules/403.php";
 
       }
 

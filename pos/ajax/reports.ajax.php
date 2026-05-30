@@ -7,6 +7,12 @@ if(!isset($_SESSION["loggedIn"]) || $_SESSION["loggedIn"] != "ok"){
 	return;
 }
 
+// Only Admin and Especial can access reports
+if(!isset($_SESSION["role"]) || ($_SESSION["role"] != "Administrador" && $_SESSION["role"] != "Especial")){
+	echo json_encode(array("error" => "Acceso denegado"));
+	return;
+}
+
 require_once "../models/connection.php";
 require_once "../models/reports.model.php";
 require_once "../controllers/reports.controller.php";
