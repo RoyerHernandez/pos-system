@@ -96,7 +96,9 @@
 
           <!-- Daily Chart -->
           <div id="dailyChartContainer" style="display:none; margin-bottom:20px;">
-            <canvas id="chartDailySales" height="80"></canvas>
+            <div style="position:relative; height:250px;">
+              <canvas id="chartDailySales"></canvas>
+            </div>
           </div>
 
           <!-- Sales Table -->

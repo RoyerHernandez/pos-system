@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="40%" r="80%">
+      <stop offset="0%" stop-color="#1A4878"></stop>
+      <stop offset="55%" stop-color="#0F3460"></stop>
+      <stop offset="100%" stop-color="#081E3A"></stop>
+    </radialGradient>
+    <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="#FFFFFF" opacity="0.06"></circle>
+    </pattern>
+    <mask id="bottleMaskBg">
+      <rect width="80" height="220" fill="white"></rect>
+      <rect x="34" y="78" width="12" height="22" rx="2" fill="black"></rect>
+      <text x="40" y="94" fill="black" font-size="9" text-anchor="middle" font-family="Arial Black, sans-serif" font-weight="900">C</text>
+    </mask>
+  </defs>
+
+  <rect width="1440" height="900" fill="url(#bgGrad)"></rect>
+  <rect width="1440" height="900" fill="url(#dots)"></rect>
+
+  
+  <path d="M720 -50 L1100 950 L340 950Z" fill="#FFFFFF" opacity="0.025"></path>
+
+  
+  <g transform="translate(-40, 540) scale(2.2)" opacity="0.07">
+    <ellipse cx="40" cy="10" rx="12" ry="9" fill="#FFFFFF"></ellipse>
+    <rect x="32" y="16" width="16" height="22" rx="4" fill="#FFFFFF"></rect>
+    <path d="M22 44 Q22 38 30 38 L50 38 Q58 38 58 44 L58 165 Q58 185 40 192 Q22 185 22 165Z" fill="#FFFFFF"></path>
+  </g>
+
+  
+  <g transform="translate(1180, 80) scale(1.2) rotate(18)" opacity="0.05">
+    <ellipse cx="40" cy="10" rx="12" ry="9" fill="#FFE500"></ellipse>
+    <rect x="32" y="16" width="16" height="22" rx="4" fill="#FFE500"></rect>
+    <path d="M22 44 Q22 38 30 38 L50 38 Q58 38 58 44 L58 165 Q58 185 40 192 Q22 185 22 165Z" fill="#FFE500"></path>
+  </g>
+
+  
+  <g transform="translate(1240, 600) scale(0.9) rotate(-12)" opacity="0.06">
+    <ellipse cx="40" cy="10" rx="12" ry="9" fill="#FFFFFF"></ellipse>
+    <rect x="32" y="16" width="16" height="22" rx="4" fill="#FFFFFF"></rect>
+    <path d="M22 44 Q22 38 30 38 L50 38 Q58 38 58 44 L58 165 Q58 185 40 192 Q22 185 22 165Z" fill="#FFFFFF"></path>
+  </g>
+
+  
+  <line x1="0" y1="780" x2="1440" y2="780" stroke="#FFFFFF" stroke-width="1" opacity="0.08"></line>
+  <line x1="0" y1="800" x2="1440" y2="800" stroke="#FFE500" stroke-width="1" opacity="0.12"></line>
+
+  
+  <circle cx="220" cy="340" r="3" fill="#FFE500" opacity="0.45"></circle>
+  <circle cx="1180" cy="280" r="2.5" fill="#FFE500" opacity="0.35"></circle>
+  <circle cx="980" cy="160" r="2" fill="#FFE500" opacity="0.5"></circle>
+  <circle cx="380" cy="200" r="2" fill="#FFFFFF" opacity="0.4"></circle>
+  <circle cx="160" cy="660" r="2" fill="#FFFFFF" opacity="0.3"></circle>
+  <circle cx="1300" cy="420" r="2" fill="#FFE500" opacity="0.4"></circle>
+</svg>
