@@ -153,6 +153,7 @@ DOCUMENT BODY
 <script src="views/js/sales.js"></script>
 <script src="views/js/sales-admin.js"></script>
 <script src="views/js/dashboard.js"></script>
+<script src="views/js/reports.js"></script>
 
 </body>
 </html>
