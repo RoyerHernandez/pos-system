@@ -130,6 +130,23 @@ class SaleModel{
 	}
 
 	/*=============================================
+	SHOW SALES BY DATE RANGE
+	=============================================*/
+
+	static public function mdlShowSalesByDate($table, $startDate, $endDate){
+
+		$stmt = Connection::connect()->prepare("SELECT v.*, u.nombre as vendedor, c.nombre as cliente FROM $table v LEFT JOIN usuarios u ON v.id_usuario = u.id LEFT JOIN clientes c ON v.id_cliente = c.id WHERE DATE(v.fecha) BETWEEN :startDate AND :endDate ORDER BY v.id DESC");
+
+		$stmt -> bindParam(":startDate", $startDate, PDO::PARAM_STR);
+		$stmt -> bindParam(":endDate", $endDate, PDO::PARAM_STR);
+
+		$stmt -> execute();
+
+		return $stmt -> fetchAll();
+
+	}
+
+	/*=============================================
 	GENERATE SALE CODE
 	=============================================*/
 

@@ -148,6 +148,7 @@ DOCUMENT BODY
 <script src="views/js/plantilla.js"></script>
 <script src="views/js/usuarios.js"></script>
 <script src="views/js/sales.js"></script>
+<script src="views/js/sales-admin.js"></script>
 
 </body>
 </html>

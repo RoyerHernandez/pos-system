@@ -64,6 +64,26 @@ if(isset($_POST["getSaleDetails"])){
 }
 
 /*=============================================
+GET ALL SALES (for DataTable)
+=============================================*/
+
+if(isset($_POST["getSales"])){
+
+	if(isset($_POST["startDate"]) && isset($_POST["endDate"]) && $_POST["startDate"] != "" && $_POST["endDate"] != ""){
+
+		$response = SaleModel::mdlShowSalesByDate("ventas", $_POST["startDate"], $_POST["endDate"]);
+
+	}else{
+
+		$response = SaleController::ctrShowSales(null, null);
+
+	}
+
+	echo json_encode($response);
+
+}
+
+/*=============================================
 OPEN CASH REGISTER
 =============================================*/
 
