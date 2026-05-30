@@ -8,6 +8,21 @@ var reportChartTopProducts = null;
 var reportChartPayment = null;
 
 /*=============================================
+AUTO-LOAD ON PAGE READY
+=============================================*/
+
+$(document).ready(function(){
+
+	var startDate = $("#reportStartDate").val();
+	var endDate = $("#reportEndDate").val();
+
+	if(startDate && endDate){
+		loadAllReports(startDate, endDate);
+	}
+
+});
+
+/*=============================================
 GENERATE REPORT
 =============================================*/
 
@@ -170,6 +185,11 @@ function loadSalesByDate(startDate, endDate){
 
 			}else{
 				html = '<div class="text-center text-muted" style="padding:30px;"><p>No hay ventas en este periodo</p></div>';
+			}
+
+			// Destroy existing DataTable if any
+			if($.fn.DataTable.isDataTable(".reportTable")){
+				$(".reportTable").DataTable().destroy();
 			}
 
 			$("#salesByDateTable").html(html);

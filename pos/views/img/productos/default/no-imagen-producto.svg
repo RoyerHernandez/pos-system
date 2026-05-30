@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" rx="12" fill="#F5F5F5"></rect>
+  <defs>
+    <pattern id="stripeNI" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="14" stroke="#E5E5E5" stroke-width="6"></line>
+    </pattern>
+  </defs>
+  <rect width="200" height="200" rx="12" fill="url(#stripeNI)" opacity="0.6"></rect>
+  <g fill="#9B9B9B" opacity="0.55" transform="translate(70,40)">
+    <rect x="22" y="0" width="16" height="10" rx="1"></rect>
+    <rect x="18" y="10" width="24" height="22" rx="2"></rect>
+    <path d="M 4 34 L 56 34 L 56 100 C 56 116 44 122 30 122 C 16 122 4 116 4 100 Z"></path>
+  </g>
+  <text x="100" y="180" fill="#9B9B9B" font-size="11" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" letter-spacing="2">SIN IMAGEN</text>
+</svg>
