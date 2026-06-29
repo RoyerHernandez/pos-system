@@ -10,7 +10,6 @@ DATATABLE INIT
 $(document).ready(function(){
 
 	$(".salesTable").DataTable({
-		"responsive": true,
 		"order": [[0, "desc"]],
 		"language": {
 			"sProcessing": "Procesando...",
@@ -146,7 +145,6 @@ function rebuildSalesTable(sales){
 
 	// Reinitialize DataTable
 	$(".salesTable").DataTable({
-		"responsive": true,
 		"order": [[0, "desc"]],
 		"language": {
 			"sProcessing": "Procesando...",

@@ -74,6 +74,20 @@
 			</li>
 			<?php endif; ?>
 
+			<?php if($role == "Administrador" || $role == "Especial"): ?>
+			<!-- INVENTARIO - Admin + Especial -->
+			<li>
+
+				<a href="inventario">
+
+					<i class="fa fa-exchange"></i>
+					<span>Inventario</span>
+
+				</a>
+
+			</li>
+			<?php endif; ?>
+
 			<!-- CAJA - All roles -->
 			<li>
 
