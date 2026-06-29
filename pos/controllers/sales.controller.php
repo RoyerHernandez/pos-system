@@ -58,6 +58,17 @@ class SaleController{
 			// Update stock (subtract)
 			ProductModel::mdlUpdateStock("productos", $product["id"], $product["quantity"], "subtract");
 
+			// Register inventory exit movement
+			InventoryModel::mdlInsertMovement("movimientos_inventario", array(
+				"id_producto" => $product["id"],
+				"id_usuario" => $saleData["id_usuario"],
+				"tipo" => "salida",
+				"motivo" => "Venta",
+				"cantidad" => $product["quantity"],
+				"observaciones" => "Venta " . $saleCode,
+				"id_referencia" => $idSale
+			));
+
 		}
 
 		// Update client purchases
@@ -90,6 +101,17 @@ class SaleController{
 		foreach($details as $detail){
 			// Restore stock (add back)
 			ProductModel::mdlUpdateStock("productos", $detail["id_producto"], $detail["cantidad"], "add");
+
+			// Register inventory entry movement (reversal)
+			InventoryModel::mdlInsertMovement("movimientos_inventario", array(
+				"id_producto" => $detail["id_producto"],
+				"id_usuario" => $_SESSION["id"],
+				"tipo" => "entrada",
+				"motivo" => "Cancelación venta",
+				"cantidad" => $detail["cantidad"],
+				"observaciones" => "Cancelación venta #" . $idSale,
+				"id_referencia" => $idSale
+			));
 		}
 
 		// Get sale info to update client purchases

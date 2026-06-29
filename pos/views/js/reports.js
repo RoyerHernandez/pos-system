@@ -196,7 +196,6 @@ function loadSalesByDate(startDate, endDate){
 
 			if(sales && sales.length > 0){
 				$(".reportTable").DataTable({
-					"responsive": true,
 					"order": [[0, "asc"]],
 					"dom": '<"row"<"col-sm-6"l><"col-sm-6"f>>t<"row"<"col-sm-5"i><"col-sm-7"p>>B',
 					"buttons": ["print", "csv"],

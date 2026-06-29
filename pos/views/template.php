@@ -45,7 +45,6 @@ session_start();
 
    <!-- DataTables -->
   <link rel="stylesheet" href="views/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
-  <link rel="stylesheet" href="views/bower_components/datatables.net-bs/css/responsive.bootstrap.min.css">
 
   <!--=====================================
   JAVASCRIPT PLUGINS
@@ -66,8 +65,6 @@ session_start();
   <!-- DataTables -->
   <script src="views/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
   <script src="views/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-  <script src="views/bower_components/datatables.net-bs/js/dataTables.responsive.min.js"></script>
-  <script src="views/bower_components/datatables.net-bs/js/responsive.bootstrap.min.js"></script>
 
   <!-- Chart.js v2.9.4 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
@@ -119,7 +116,7 @@ DOCUMENT BODY
       $allRoles = array("inicio", "crear-venta", "caja", "salir");
 
       // Routes for Admin and Especial
-      $adminEspecial = array("productos", "clientes", "reportes", "ventas");
+      $adminEspecial = array("productos", "clientes", "reportes", "ventas", "inventario");
 
       // Routes for Admin only
       $adminOnly = array("usuarios", "categorias");
@@ -179,11 +176,11 @@ DOCUMENT BODY
 
 
 <script src="views/js/plantilla.js"></script>
-<script src="views/js/usuarios.js"></script>
 <script src="views/js/sales.js"></script>
 <script src="views/js/sales-admin.js"></script>
 <script src="views/js/dashboard.js"></script>
 <script src="views/js/reports.js"></script>
+<script src="views/js/inventory.js"></script>
 
 </body>
 </html>
