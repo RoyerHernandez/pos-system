@@ -1,9 +1,12 @@
+<?php $role = isset($_SESSION["role"]) ? $_SESSION["role"] : "Vendedor"; ?>
+
 <aside class="main-sidebar">
 
 	 <section class="sidebar">
 
 		<ul class="sidebar-menu">
 
+			<!-- INICIO - All roles -->
 			<li class="active">
 
 				<a href="inicio">
@@ -15,6 +18,8 @@
 
 			</li>
 
+			<?php if($role == "Administrador"): ?>
+			<!-- USUARIOS - Admin only -->
 			<li>
 
 				<a href="usuarios">
@@ -25,18 +30,24 @@
 				</a>
 
 			</li>
+			<?php endif; ?>
 
+			<?php if($role == "Administrador"): ?>
+			<!-- CATEGORIAS - Admin only -->
 			<li>
 
 				<a href="categorias">
 
 					<i class="fa fa-th"></i>
-					<span>Categorías</span>
+					<span>Categorias</span>
 
 				</a>
 
 			</li>
+			<?php endif; ?>
 
+			<?php if($role == "Administrador" || $role == "Especial"): ?>
+			<!-- PRODUCTOS - Admin + Especial -->
 			<li>
 
 				<a href="productos">
@@ -47,7 +58,10 @@
 				</a>
 
 			</li>
+			<?php endif; ?>
 
+			<?php if($role == "Administrador" || $role == "Especial"): ?>
+			<!-- CLIENTES - Admin + Especial -->
 			<li>
 
 				<a href="clientes">
@@ -58,7 +72,21 @@
 				</a>
 
 			</li>
+			<?php endif; ?>
 
+			<!-- CAJA - All roles -->
+			<li>
+
+				<a href="caja">
+
+					<i class="fa fa-desktop"></i>
+					<span>Caja</span>
+
+				</a>
+
+			</li>
+
+			<!-- VENTAS - Submenu -->
 			<li class="treeview">
 
 				<a href="#">
@@ -77,6 +105,8 @@
 
 				<ul class="treeview-menu">
 
+					<?php if($role == "Administrador" || $role == "Especial"): ?>
+					<!-- ADMINISTRAR VENTAS - Admin + Especial -->
 					<li>
 
 						<a href="ventas">
@@ -87,7 +117,9 @@
 						</a>
 
 					</li>
+					<?php endif; ?>
 
+					<!-- CREAR VENTA - All roles -->
 					<li>
 
 						<a href="crear-venta">
@@ -99,6 +131,8 @@
 
 					</li>
 
+					<?php if($role == "Administrador" || $role == "Especial"): ?>
+					<!-- REPORTES - Admin + Especial -->
 					<li>
 
 						<a href="reportes">
@@ -109,6 +143,7 @@
 						</a>
 
 					</li>
+					<?php endif; ?>
 
 				</ul>
 

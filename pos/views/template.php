@@ -11,12 +11,12 @@ session_start();
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>Inventory System</title>
+  <title>Callejon Bar - POS</title>
 
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-  <link rel="icon" href="views/img/plantilla/icono-negro.png">
+  <link rel="icon" href="views/img/plantilla/favicon.svg" type="image/svg+xml">
 
    <!--=====================================
   CSS PLUGINS
@@ -36,6 +36,9 @@ session_start();
 
   <!-- AdminLTE Skins -->
   <link rel="stylesheet" href="views/dist/css/skins/_all-skins.min.css">
+
+  <!-- Callejon Bar Branding -->
+  <link rel="stylesheet" href="views/css/callejon-brand.css">
 
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
@@ -66,6 +69,9 @@ session_start();
   <script src="views/bower_components/datatables.net-bs/js/dataTables.responsive.min.js"></script>
   <script src="views/bower_components/datatables.net-bs/js/responsive.bootstrap.min.js"></script>
 
+  <!-- Chart.js v2.9.4 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+
   <!-- SweetAlert 2 -->
   <script src="views/plugins/sweetalert2/sweetalert2.all.js"></script>
   <!-- By default SweetAlert2 doesn't support IE. To enable IE 11 support, include Promise polyfill:-->
@@ -77,7 +83,7 @@ session_start();
 DOCUMENT BODY
 ======================================-->
 
-<body class="hold-transition skin-blue sidebar-collapse sidebar-mini login-page">
+<body class="hold-transition skin-black sidebar-collapse sidebar-mini login-page">
 
   <?php
 
@@ -103,21 +109,49 @@ DOCUMENT BODY
 
     if(isset($_GET["ruta"])){
 
-      if($_GET["ruta"] == "inicio" ||
-         $_GET["ruta"] == "usuarios" ||
-         $_GET["ruta"] == "categorias" ||
-         $_GET["ruta"] == "productos" ||
-         $_GET["ruta"] == "clientes" ||
-         $_GET["ruta"] == "ventas" ||
-         $_GET["ruta"] == "crear-venta" ||
-         $_GET["ruta"] == "reportes" ||
-         $_GET["ruta"] == "salir"){
+      /*=============================================
+      ROLE-BASED ACCESS CONTROL
+      =============================================*/
 
-        include "modules/".$_GET["ruta"].".php";
+      $role = isset($_SESSION["role"]) ? $_SESSION["role"] : "Vendedor";
+
+      // Routes accessible by all roles
+      $allRoles = array("inicio", "crear-venta", "caja", "salir");
+
+      // Routes for Admin and Especial
+      $adminEspecial = array("productos", "clientes", "reportes", "ventas");
+
+      // Routes for Admin only
+      $adminOnly = array("usuarios", "categorias");
+
+      $route = $_GET["ruta"];
+      $allowed = false;
+
+      if(in_array($route, $allRoles)){
+
+        $allowed = true;
+
+      }else if(in_array($route, $adminEspecial)){
+
+        if($role == "Administrador" || $role == "Especial"){
+          $allowed = true;
+        }
+
+      }else if(in_array($route, $adminOnly)){
+
+        if($role == "Administrador"){
+          $allowed = true;
+        }
+
+      }
+
+      if($allowed){
+
+        include "modules/".$route.".php";
 
       }else{
 
-        include "modules/404.php";
+        include "modules/403.php";
 
       }
 
@@ -146,6 +180,10 @@ DOCUMENT BODY
 
 <script src="views/js/plantilla.js"></script>
 <script src="views/js/usuarios.js"></script>
+<script src="views/js/sales.js"></script>
+<script src="views/js/sales-admin.js"></script>
+<script src="views/js/dashboard.js"></script>
+<script src="views/js/reports.js"></script>
 
 </body>
 </html>

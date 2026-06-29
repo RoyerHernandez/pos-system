@@ -1,0 +1,71 @@
+/*=============================================
+CALLEJON BAR - CUSTOM BRANDING CSS
+=============================================*/
+
+/* Login page background */
+#back {
+  background: url(../img/plantilla/fondo-login.svg) no-repeat center center !important;
+  background-size: cover !important;
+  background-color: #0F3460 !important;
+}
+
+/* Login box styling */
+.login-box-body {
+  border-top: 3px solid #2C2C2C;
+}
+
+.login-box-body .btn-primary {
+  background-color: #2C2C2C;
+  border-color: #2C2C2C;
+}
+
+.login-box-body .btn-primary:hover {
+  background-color: #444;
+  border-color: #444;
+}
+
+/* Sidebar branding */
+.skin-black .main-sidebar {
+  background-color: #2C2C2C;
+}
+
+.skin-black .sidebar-menu > li > a {
+  color: #ccc;
+}
+
+.skin-black .sidebar-menu > li.active > a,
+.skin-black .sidebar-menu > li > a:hover {
+  color: #fff;
+  background-color: #333;
+}
+
+.skin-black .sidebar-menu > li.active > a {
+  border-left-color: #FFE500;
+}
+
+/* Header logo area */
+.skin-black .main-header .logo {
+  background-color: #2C2C2C;
+}
+
+.skin-black .main-header .logo:hover {
+  background-color: #333;
+}
+
+/* Navbar */
+.skin-black .main-header .navbar {
+  background-color: #333;
+}
+
+/* Navbar text and icons visible on dark background */
+.skin-black .main-header .navbar .nav > li > a {
+  color: #fff;
+}
+
+.skin-black .main-header .navbar .sidebar-toggle {
+  color: #fff;
+}
+
+.skin-black .main-header .navbar .sidebar-toggle:hover {
+  background-color: #444;
+}

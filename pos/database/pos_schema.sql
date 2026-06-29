@@ -149,6 +149,35 @@ INSERT INTO categorias (nombre, descripcion) VALUES
   ('Cuidado Personal', 'Higiene y cuidado personal'),
   ('Varios', 'Productos varios y miscelaneos');
 
+-- ============================================
+-- TABLA: caja
+-- Descripcion: Control de apertura/cierre de caja
+-- Relacion: usuario (N:1)
+-- ============================================
+CREATE TABLE caja (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  id_usuario INT NOT NULL,
+  monto_apertura DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  monto_cierre DECIMAL(10,2) DEFAULT NULL,
+  total_ventas DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  total_efectivo DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  total_tarjeta DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  total_transferencia DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  estado ENUM('abierta','cerrada') NOT NULL DEFAULT 'abierta',
+  fecha_apertura TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  fecha_cierre DATETIME DEFAULT NULL,
+  FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE=InnoDB;
+
+-- Agregar relacion caja a ventas
+ALTER TABLE ventas ADD COLUMN id_caja INT DEFAULT NULL;
+ALTER TABLE ventas ADD FOREIGN KEY (id_caja) REFERENCES caja(id)
+  ON UPDATE CASCADE ON DELETE SET NULL;
+
+CREATE INDEX idx_caja_usuario ON caja(id_usuario);
+CREATE INDEX idx_caja_estado ON caja(estado);
+
 -- Cliente generico (para ventas sin cliente registrado)
 INSERT INTO clientes (nombre, documento)
 VALUES ('Publico General', '0000000000');
