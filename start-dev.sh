@@ -14,7 +14,7 @@ echo "Starting POS API server..."
 cd "$API_DIR"
 
 # Build
-go build -o pos-api ./cmd/server
+go build -o pos-api ./cmd/api
 
 # Run in background
 ./pos-api &

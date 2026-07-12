@@ -10,10 +10,10 @@ Clients (Web, Android, iOS)
             v
   Go REST API (port 8080)
   ├── Chi Router + CORS + JWT Middleware
-  ├── Handlers   (HTTP request/response)
-  ├── Services   (business logic, transactions)
-  ├── Repositories (data access via sqlx)
-  └── Models     (structs matching DB schema)
+  ├── Controllers  (HTTP request/response + DTOs)
+  ├── Services     (business logic, transactions, interfaces)
+  ├── Repositories (data access via sqlx + DAOs)
+  └── Domain       (pure types, no external deps)
             |
             v
      MySQL (shared database)
@@ -27,35 +27,64 @@ Clients (Web, Android, iOS)
 
 ```
 api/
-├── cmd/server/main.go              # Entry point — wires dependencies, starts server
+├── cmd/api/
+│   ├── main.go                          # Entry point — calls server.New().Run()
+│   └── server/
+│       ├── server.go                    # Bootstrap: config, DB, router, middleware, graceful shutdown
+│       ├── dependencies.go              # All DI wiring — resolve* functions, bottom-up
+│       ├── url_mapping.go               # All route registration in one place
+│       └── middleware/
+│           ├── auth.go                  # JWT extraction + context injection
+│           ├── ratelimit.go             # Per-IP rate limiting (in-memory)
+│           ├── requestid.go             # X-Request-ID generation/validation
+│           └── role.go                  # Role-based access (RequireRole)
 ├── internal/
-│   ├── auth/jwt.go                 # JWT generation and validation
-│   ├── config/
-│   │   ├── config.go               # Environment config loader
-│   │   └── database.go             # MySQL connection pool (sqlx)
-│   ├── handlers/                   # HTTP handlers (one per entity)
-│   │   ├── auth.go
-│   │   ├── cashregister.go
-│   │   ├── category.go
-│   │   ├── client.go
-│   │   ├── dashboard.go
-│   │   ├── health.go
-│   │   ├── inventory.go
-│   │   ├── product.go
-│   │   ├── reports.go
-│   │   ├── response.go            # Shared JSON/error response helpers
-│   │   ├── sale.go
-│   │   └── user.go
-│   ├── middleware/
-│   │   ├── auth.go                 # JWT extraction + context injection
-│   │   ├── ratelimit.go            # Per-IP rate limiting (in-memory)
-│   │   ├── requestid.go            # X-Request-ID generation/validation
-│   │   └── role.go                 # Role-based access (RequireRole)
-│   ├── models/                     # Structs matching DB tables
-│   ├── repositories/               # Data access layer (SQL queries)
-│   ├── router/router.go            # Chi router + CORS config
-│   ├── services/                   # Business logic layer
-│   └── utils/image.go              # Image upload with MIME validation
+│   ├── domain/                          # Pure types — no external imports
+│   │   ├── entity.go                    # Placeholder for typed ID aliases
+│   │   ├── aggregate.go                 # All domain structs (no json/db tags)
+│   │   ├── value_object.go              # Constants (roles, statuses, payment methods)
+│   │   └── receiver.go                  # Methods on domain types (ToResponse)
+│   ├── controller/web/                  # REST handlers — decode, call service, encode
+│   │   ├── dto.go                       # All DTOs with json tags + conversion functions
+│   │   ├── claims.go                    # Auth context extraction helper
+│   │   ├── response.go                  # Shared JSON/error response helpers
+│   │   ├── auth_controller.go
+│   │   ├── user_controller.go
+│   │   ├── category_controller.go
+│   │   ├── product_controller.go
+│   │   ├── client_controller.go
+│   │   ├── sale_controller.go
+│   │   ├── inventory_controller.go
+│   │   ├── cashregister_controller.go
+│   │   ├── dashboard_controller.go
+│   │   ├── reports_controller.go
+│   │   └── health_controller.go
+│   ├── service/                         # Business logic — interfaces for dependencies
+│   │   ├── auth_service.go
+│   │   ├── user_service.go
+│   │   ├── category_service.go
+│   │   ├── product_service.go
+│   │   ├── client_service.go
+│   │   ├── sale_service.go
+│   │   ├── inventory_service.go
+│   │   ├── cashregister_service.go
+│   │   ├── dashboard_service.go
+│   │   └── reports_service.go
+│   └── repository/                      # Data access — DAOs + domain conversion
+│       ├── dao.go                       # All DAO structs with db tags
+│       ├── user_repository.go
+│       ├── category_repository.go
+│       ├── product_repository.go
+│       ├── client_repository.go
+│       ├── sale_repository.go
+│       ├── inventory_repository.go
+│       ├── cashregister_repository.go
+│       ├── dashboard_repository.go
+│       └── reports_repository.go
+├── pkg/
+│   ├── apperror/error.go                # Domain error types (NotFound, Validation, etc.)
+│   ├── generic/image.go                 # Image upload with MIME validation
+│   └── infrastructure/auth/jwt.go       # JWT generation, validation, context helpers
 ├── go.mod
 ├── go.sum
 └── .env.example
@@ -112,7 +141,7 @@ CORS_ORIGINS=http://localhost:8000,http://localhost:8080
 
 ```bash
 # From the api/ directory
-go run ./cmd/server
+go run ./cmd/api
 
 # Or from the repo root using dev scripts
 ./start-dev.sh    # Starts both PHP + Go servers
