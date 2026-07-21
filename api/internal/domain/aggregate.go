@@ -27,6 +27,19 @@ type Sale struct {
 	Estado      string
 	Fecha       *time.Time
 	IDCaja      *int
+	IDMesa      *int
+}
+
+type Table struct {
+	ID                 int
+	Numero             int
+	Nombre             *string
+	Capacidad          int
+	Estado             string
+	IDVentaActiva      *int
+	IDMesero           *int
+	FechaCreacion      *time.Time
+	FechaActualizacion *time.Time
 }
 
 type SaleDetail struct {
