@@ -47,6 +47,22 @@ func authResponseFromService(r *service.AuthResponse) AuthResponseDTO {
 // User
 // ---------------------------------------------------------------------------
 
+// CreateUserDTO represents the create user JSON request body.
+type CreateUserDTO struct {
+	Usuario  string `json:"usuario"`
+	Nombre   string `json:"nombre"`
+	Perfil   string `json:"perfil"`
+	Password string `json:"password"`
+}
+
+// UpdateUserDTO represents the update user JSON request body.
+type UpdateUserDTO struct {
+	Usuario  string `json:"usuario"`
+	Nombre   string `json:"nombre"`
+	Perfil   string `json:"perfil"`
+	Password string `json:"password"`
+}
+
 // UserResponseDTO is the JSON representation of a user (no password).
 type UserResponseDTO struct {
 	ID            int        `json:"id"`
@@ -121,6 +137,24 @@ func categoryListFromDomain(cats []domain.Category) []CategoryResponseDTO {
 // ---------------------------------------------------------------------------
 // Product
 // ---------------------------------------------------------------------------
+
+// CreateProductDTO represents the create product JSON request body.
+type CreateProductDTO struct {
+	Codigo       string  `json:"codigo"`
+	IDCategoria  int     `json:"id_categoria"`
+	Descripcion  string  `json:"descripcion"`
+	Stock        int     `json:"stock"`
+	PrecioCompra float64 `json:"precio_compra"`
+	PrecioVenta  float64 `json:"precio_venta"`
+}
+
+// UpdateProductDTO represents the update product JSON request body.
+type UpdateProductDTO struct {
+	IDCategoria  int     `json:"id_categoria"`
+	Descripcion  string  `json:"descripcion"`
+	PrecioCompra float64 `json:"precio_compra"`
+	PrecioVenta  float64 `json:"precio_venta"`
+}
 
 // ProductResponseDTO is the JSON representation of a product.
 type ProductResponseDTO struct {

@@ -1,6 +1,7 @@
 package web
 
 import (
+	"encoding/json"
 	"errors"
 	"log"
 	"net/http"
@@ -8,7 +9,6 @@ import (
 
 	"github.com/RoyerHernandez/pos-system/api/internal/domain"
 	"github.com/RoyerHernandez/pos-system/api/pkg/apperror"
-	"github.com/RoyerHernandez/pos-system/api/pkg/generic"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -82,37 +82,15 @@ func (c *ProductController) GetByID(w http.ResponseWriter, r *http.Request) {
 	RespondJSON(w, http.StatusOK, productResponseFromDomain(*product))
 }
 
-// Create creates a new product from multipart form data.
+// Create creates a new product from JSON body.
 func (c *ProductController) Create(w http.ResponseWriter, r *http.Request) {
-	if err := r.ParseMultipartForm(10 << 20); err != nil {
-		RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "invalid multipart form")
+	var req CreateProductDTO
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "invalid request body")
 		return
 	}
 
-	codigo := r.FormValue("codigo")
-	idCategoria, err := strconv.Atoi(r.FormValue("id_categoria"))
-	if err != nil {
-		RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "invalid id_categoria value")
-		return
-	}
-	descripcion := r.FormValue("descripcion")
-	precioCompra, err := strconv.ParseFloat(r.FormValue("precio_compra"), 64)
-	if err != nil {
-		RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "invalid precio_compra value")
-		return
-	}
-	precioVenta, err := strconv.ParseFloat(r.FormValue("precio_venta"), 64)
-	if err != nil {
-		RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "invalid precio_venta value")
-		return
-	}
-	stock, err := strconv.Atoi(r.FormValue("stock"))
-	if err != nil {
-		RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "invalid stock value")
-		return
-	}
-
-	productID, err := c.service.Create(codigo, idCategoria, descripcion, stock, precioCompra, precioVenta)
+	productID, err := c.service.Create(req.Codigo, req.IDCategoria, req.Descripcion, req.Stock, req.PrecioCompra, req.PrecioVenta)
 	if err != nil {
 		var validation apperror.ValidationError
 		if errors.As(err, &validation) {
@@ -124,26 +102,10 @@ func (c *ProductController) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Handle image upload
-	file, header, err := r.FormFile("imagen")
-	if err == nil {
-		defer file.Close()
-		filename, err := generic.SaveImage(file, header, "productos", strconv.Itoa(int(productID)))
-		if err != nil {
-			RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "failed to upload product image")
-			return
-		}
-		if err := c.service.UpdateImage(int(productID), filename); err != nil {
-			log.Printf("controller - CreateProduct/UpdateImage: %v", err)
-			RespondError(w, http.StatusInternalServerError, "INTERNAL_ERROR", "failed to update product image")
-			return
-		}
-	}
-
 	RespondJSON(w, http.StatusCreated, map[string]interface{}{"id": productID})
 }
 
-// Update updates an existing product from multipart form data.
+// Update updates an existing product from JSON body.
 func (c *ProductController) Update(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
@@ -151,29 +113,13 @@ func (c *ProductController) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := r.ParseMultipartForm(10 << 20); err != nil {
-		RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "invalid multipart form")
+	var req UpdateProductDTO
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "invalid request body")
 		return
 	}
 
-	idCategoria, err := strconv.Atoi(r.FormValue("id_categoria"))
-	if err != nil {
-		RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "invalid id_categoria value")
-		return
-	}
-	descripcion := r.FormValue("descripcion")
-	precioCompra, err := strconv.ParseFloat(r.FormValue("precio_compra"), 64)
-	if err != nil {
-		RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "invalid precio_compra value")
-		return
-	}
-	precioVenta, err := strconv.ParseFloat(r.FormValue("precio_venta"), 64)
-	if err != nil {
-		RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "invalid precio_venta value")
-		return
-	}
-
-	if err := c.service.Update(id, idCategoria, descripcion, precioCompra, precioVenta); err != nil {
+	if err := c.service.Update(id, req.IDCategoria, req.Descripcion, req.PrecioCompra, req.PrecioVenta); err != nil {
 		var validation apperror.ValidationError
 		if errors.As(err, &validation) {
 			RespondError(w, http.StatusBadRequest, "BAD_REQUEST", validation.Message)
@@ -187,22 +133,6 @@ func (c *ProductController) Update(w http.ResponseWriter, r *http.Request) {
 		log.Printf("controller - UpdateProduct: %v", err)
 		RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "failed to update product")
 		return
-	}
-
-	// Handle image upload
-	file, header, err := r.FormFile("imagen")
-	if err == nil {
-		defer file.Close()
-		filename, err := generic.SaveImage(file, header, "productos", strconv.Itoa(id))
-		if err != nil {
-			RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "failed to upload product image")
-			return
-		}
-		if err := c.service.UpdateImage(id, filename); err != nil {
-			log.Printf("controller - UpdateProduct/UpdateImage: %v", err)
-			RespondError(w, http.StatusInternalServerError, "INTERNAL_ERROR", "failed to update product image")
-			return
-		}
 	}
 
 	RespondJSON(w, http.StatusOK, map[string]string{"message": "product updated"})

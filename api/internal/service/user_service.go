@@ -2,8 +2,11 @@ package service
 
 import (
 	"errors"
+	"fmt"
+	"strings"
 
 	"github.com/RoyerHernandez/pos-system/api/internal/domain"
+	"github.com/RoyerHernandez/pos-system/api/pkg/apperror"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -43,16 +46,16 @@ func (s *UserService) GetByID(id int) (*domain.User, error) {
 
 func (s *UserService) Create(user *domain.User, password string) (int64, error) {
 	if user.Usuario == "" {
-		return 0, errors.New("usuario is required")
+		return 0, apperror.ValidationError{Message: "usuario is required"}
 	}
 	if !validProfiles[user.Perfil] {
-		return 0, errors.New("perfil must be Administrador, Especial, or Vendedor")
+		return 0, apperror.ValidationError{Message: fmt.Sprintf("perfil must be one of: %s", profileNames())}
 	}
 	if password == "" {
-		return 0, errors.New("password is required")
+		return 0, apperror.ValidationError{Message: "password is required"}
 	}
 	if len(password) < 6 {
-		return 0, errors.New("password must be at least 6 characters")
+		return 0, apperror.ValidationError{Message: "password must be at least 6 characters"}
 	}
 
 	exists, err := s.users.ExistsByUsername(user.Usuario, 0)
@@ -60,7 +63,7 @@ func (s *UserService) Create(user *domain.User, password string) (int64, error) 
 		return 0, err
 	}
 	if exists {
-		return 0, errors.New("usuario already exists")
+		return 0, apperror.ConflictError{Message: "usuario already exists"}
 	}
 
 	hashed, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
@@ -75,10 +78,10 @@ func (s *UserService) Create(user *domain.User, password string) (int64, error) 
 
 func (s *UserService) Update(user *domain.User, password string) error {
 	if user.Usuario == "" {
-		return errors.New("usuario is required")
+		return apperror.ValidationError{Message: "usuario is required"}
 	}
 	if !validProfiles[user.Perfil] {
-		return errors.New("perfil must be Administrador, Especial, or Vendedor")
+		return apperror.ValidationError{Message: fmt.Sprintf("perfil must be one of: %s", profileNames())}
 	}
 
 	exists, err := s.users.ExistsByUsername(user.Usuario, user.ID)
@@ -86,12 +89,12 @@ func (s *UserService) Update(user *domain.User, password string) error {
 		return err
 	}
 	if exists {
-		return errors.New("usuario already exists")
+		return apperror.ConflictError{Message: "usuario already exists"}
 	}
 
 	if password != "" {
 		if len(password) < 6 {
-			return errors.New("password must be at least 6 characters")
+			return apperror.ValidationError{Message: "password must be at least 6 characters"}
 		}
 		hashed, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 		if err != nil {
@@ -105,4 +108,12 @@ func (s *UserService) Update(user *domain.User, password string) error {
 
 func (s *UserService) Delete(id int) error {
 	return s.users.SoftDelete(id)
+}
+
+func profileNames() string {
+	names := make([]string, 0, len(validProfiles))
+	for k := range validProfiles {
+		names = append(names, k)
+	}
+	return strings.Join(names, ", ")
 }

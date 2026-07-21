@@ -1,15 +1,14 @@
 package web
 
 import (
+	"encoding/json"
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
 
 	"github.com/RoyerHernandez/pos-system/api/internal/domain"
 	"github.com/RoyerHernandez/pos-system/api/pkg/apperror"
-	"github.com/RoyerHernandez/pos-system/api/pkg/generic"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -78,33 +77,21 @@ func (c *UserController) GetByID(w http.ResponseWriter, r *http.Request) {
 	RespondJSON(w, http.StatusOK, userResponseFromDomain(user.ToResponse()))
 }
 
-// Create creates a new user from multipart form data.
+// Create creates a new user from JSON body.
 func (c *UserController) Create(w http.ResponseWriter, r *http.Request) {
-	if err := r.ParseMultipartForm(10 << 20); err != nil {
-		RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "invalid form data")
+	var req CreateUserDTO
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "invalid request body")
 		return
 	}
 
 	user := &domain.User{
-		Usuario: r.FormValue("usuario"),
-		Nombre:  r.FormValue("nombre"),
-		Perfil:  r.FormValue("perfil"),
-	}
-	password := r.FormValue("password")
-
-	// Handle optional photo upload
-	file, header, err := r.FormFile("foto")
-	if err == nil {
-		defer file.Close()
-		filename, err := generic.SaveImage(file, header, "usuarios", fmt.Sprintf("%03d", 0))
-		if err != nil {
-			RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "failed to upload user photo")
-			return
-		}
-		user.Foto = &filename
+		Usuario: req.Usuario,
+		Nombre:  req.Nombre,
+		Perfil:  req.Perfil,
 	}
 
-	id, err := c.service.Create(user, password)
+	id, err := c.service.Create(user, req.Password)
 	if err != nil {
 		var validation apperror.ValidationError
 		if errors.As(err, &validation) {
@@ -124,7 +111,7 @@ func (c *UserController) Create(w http.ResponseWriter, r *http.Request) {
 	RespondJSON(w, http.StatusCreated, map[string]interface{}{"id": id})
 }
 
-// Update updates an existing user from multipart form data.
+// Update updates an existing user from JSON body.
 func (c *UserController) Update(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
@@ -132,32 +119,20 @@ func (c *UserController) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := r.ParseMultipartForm(10 << 20); err != nil {
-		RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "invalid form data")
+	var req UpdateUserDTO
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "invalid request body")
 		return
 	}
 
 	user := &domain.User{
 		ID:      id,
-		Usuario: r.FormValue("usuario"),
-		Nombre:  r.FormValue("nombre"),
-		Perfil:  r.FormValue("perfil"),
-	}
-	password := r.FormValue("password")
-
-	// Handle optional photo upload
-	file, header, err := r.FormFile("foto")
-	if err == nil {
-		defer file.Close()
-		filename, err := generic.SaveImage(file, header, "usuarios", fmt.Sprintf("%03d", id))
-		if err != nil {
-			RespondError(w, http.StatusBadRequest, "INVALID_INPUT", "failed to upload user photo")
-			return
-		}
-		user.Foto = &filename
+		Usuario: req.Usuario,
+		Nombre:  req.Nombre,
+		Perfil:  req.Perfil,
 	}
 
-	if err := c.service.Update(user, password); err != nil {
+	if err := c.service.Update(user, req.Password); err != nil {
 		var validation apperror.ValidationError
 		if errors.As(err, &validation) {
 			RespondError(w, http.StatusBadRequest, "BAD_REQUEST", validation.Message)
