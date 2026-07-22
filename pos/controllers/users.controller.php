@@ -101,18 +101,16 @@ class UserController{
 					}
 
 					/*=============================================
-					APPLY PHP IMAGE FUNCTIONS BASED ON TYPE
+					PROCESS IMAGE (any format supported by GD)
 					=============================================*/
 
-					$mimeType = mime_content_type($_FILES["nuevaFoto"]["tmp_name"]);
+					$source = @imagecreatefromstring(file_get_contents($_FILES["nuevaFoto"]["tmp_name"]));
 
-					if($mimeType == "image/jpeg"){
+					if($source !== false){
 
 						$random = mt_rand(100,999);
 
 						$path = "views/img/usuarios/".$_POST["nuevoUsuario"]."/".$random.".jpg";
-
-						$source = imagecreatefromjpeg($_FILES["nuevaFoto"]["tmp_name"]);
 
 						$destination = imagecreatetruecolor($newWidth, $newHeight);
 
@@ -120,21 +118,8 @@ class UserController{
 
 						imagejpeg($destination, $absDir."/".$random.".jpg");
 
-					}
-
-					if($mimeType == "image/png"){
-
-						$random = mt_rand(100,999);
-
-						$path = "views/img/usuarios/".$_POST["nuevoUsuario"]."/".$random.".png";
-
-						$source = imagecreatefrompng($_FILES["nuevaFoto"]["tmp_name"]);
-
-						$destination = imagecreatetruecolor($newWidth, $newHeight);
-
-						imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-
-						imagepng($destination, $absDir."/".$random.".png");
+						imagedestroy($source);
+						imagedestroy($destination);
 
 					}
 
@@ -235,27 +220,26 @@ class UserController{
 					mkdir($absDir, 0755, true);
 				}
 
-				$mimeType = mime_content_type($_FILES["editarFoto"]["tmp_name"]);
+				/*=============================================
+				PROCESS IMAGE (any format supported by GD)
+				=============================================*/
 
-				if($mimeType == "image/jpeg"){
+				$source = @imagecreatefromstring(file_get_contents($_FILES["editarFoto"]["tmp_name"]));
+
+				if($source !== false){
 
 					$random = mt_rand(100,999);
+
 					$path = "views/img/usuarios/".$_POST["editarUsuario"]."/".$random.".jpg";
-					$source = imagecreatefromjpeg($_FILES["editarFoto"]["tmp_name"]);
+
 					$destination = imagecreatetruecolor($newWidth, $newHeight);
+
 					imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
 					imagejpeg($destination, $absDir."/".$random.".jpg");
 
-				}
-
-				if($mimeType == "image/png"){
-
-					$random = mt_rand(100,999);
-					$path = "views/img/usuarios/".$_POST["editarUsuario"]."/".$random.".png";
-					$source = imagecreatefrompng($_FILES["editarFoto"]["tmp_name"]);
-					$destination = imagecreatetruecolor($newWidth, $newHeight);
-					imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-					imagepng($destination, $absDir."/".$random.".png");
+					imagedestroy($source);
+					imagedestroy($destination);
 
 				}
 
