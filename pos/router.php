@@ -13,6 +13,7 @@ if($uri !== "/" && file_exists(__DIR__ . $uri)){
 }
 
 // Route clean URLs: /productos -> index.php?ruta=productos
+// Note: $_GET["ruta"] may not persist in PHP 8.5 built-in server; template.php reads REQUEST_URI directly
 if(preg_match('#^/([-a-zA-Z0-9]+)$#', $uri, $matches)){
     $_GET["ruta"] = $matches[1];
 }

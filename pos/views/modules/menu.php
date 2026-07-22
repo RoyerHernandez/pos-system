@@ -9,7 +9,7 @@
 			<!-- INICIO - All roles -->
 			<li class="active">
 
-				<a href="inicio">
+				<a href="/inicio">
 
 					<i class="fa fa-home"></i>
 					<span>Inicio</span>
@@ -22,7 +22,7 @@
 			<!-- USUARIOS - Admin only -->
 			<li>
 
-				<a href="usuarios">
+				<a href="/usuarios">
 
 					<i class="fa fa-user"></i>
 					<span>Usuarios</span>
@@ -36,7 +36,7 @@
 			<!-- CATEGORIAS - Admin only -->
 			<li>
 
-				<a href="categorias">
+				<a href="/categorias">
 
 					<i class="fa fa-th"></i>
 					<span>Categorias</span>
@@ -50,7 +50,7 @@
 			<!-- PRODUCTOS - Admin + Especial -->
 			<li>
 
-				<a href="productos">
+				<a href="/productos">
 
 					<i class="fa fa-product-hunt"></i>
 					<span>Productos</span>
@@ -64,7 +64,7 @@
 			<!-- CLIENTES - Admin + Especial -->
 			<li>
 
-				<a href="clientes">
+				<a href="/clientes">
 
 					<i class="fa fa-users"></i>
 					<span>Clientes</span>
@@ -78,7 +78,7 @@
 			<!-- INVENTARIO - Admin + Especial -->
 			<li>
 
-				<a href="inventario">
+				<a href="/inventario">
 
 					<i class="fa fa-exchange"></i>
 					<span>Inventario</span>
@@ -91,7 +91,7 @@
 			<!-- CAJA - All roles -->
 			<li>
 
-				<a href="caja">
+				<a href="/caja">
 
 					<i class="fa fa-desktop"></i>
 					<span>Caja</span>
@@ -123,7 +123,7 @@
 					<!-- ADMINISTRAR VENTAS - Admin + Especial -->
 					<li>
 
-						<a href="ventas">
+						<a href="/ventas">
 
 							<i class="fa fa-circle-o"></i>
 							<span>Administrar ventas</span>
@@ -136,7 +136,7 @@
 					<!-- CREAR VENTA - All roles -->
 					<li>
 
-						<a href="crear-venta">
+						<a href="/crear-venta">
 
 							<i class="fa fa-circle-o"></i>
 							<span>Crear venta</span>
@@ -149,7 +149,7 @@
 					<!-- REPORTES - Admin + Especial -->
 					<li>
 
-						<a href="reportes">
+						<a href="/reportes">
 
 							<i class="fa fa-circle-o"></i>
 							<span>Reporte de ventas</span>
