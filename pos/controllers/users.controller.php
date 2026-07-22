@@ -94,15 +94,19 @@ class UserController{
 					CREATE DIRECTORY TO STORE USER PHOTO
 					=============================================*/
 
-					$directory = "views/img/usuarios/".$_POST["nuevoUsuario"];
+					$absDir = __DIR__ . "/../views/img/usuarios/" . $_POST["nuevoUsuario"];
 
-					mkdir($directory, 0755);
+					if(!is_dir($absDir)){
+						mkdir($absDir, 0755, true);
+					}
 
 					/*=============================================
 					APPLY PHP IMAGE FUNCTIONS BASED ON TYPE
 					=============================================*/
 
-					if($_FILES["nuevaFoto"]["type"] == "image/jpeg"){
+					$mimeType = mime_content_type($_FILES["nuevaFoto"]["tmp_name"]);
+
+					if($mimeType == "image/jpeg"){
 
 						$random = mt_rand(100,999);
 
@@ -114,11 +118,11 @@ class UserController{
 
 						imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-						imagejpeg($destination, $path);
+						imagejpeg($destination, $absDir."/".$random.".jpg");
 
 					}
 
-					if($_FILES["nuevaFoto"]["type"] == "image/png"){
+					if($mimeType == "image/png"){
 
 						$random = mt_rand(100,999);
 
@@ -130,7 +134,7 @@ class UserController{
 
 						imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-						imagepng($destination, $path);
+						imagepng($destination, $absDir."/".$random.".png");
 
 					}
 
@@ -225,31 +229,33 @@ class UserController{
 				$newWidth = 500;
 				$newHeight = 500;
 
-				$directory = "views/img/usuarios/".$_POST["editarUsuario"];
+				$absDir = __DIR__ . "/../views/img/usuarios/" . $_POST["editarUsuario"];
 
-				if(!is_dir($directory)){
-					mkdir($directory, 0755);
+				if(!is_dir($absDir)){
+					mkdir($absDir, 0755, true);
 				}
 
-				if($_FILES["editarFoto"]["type"] == "image/jpeg"){
+				$mimeType = mime_content_type($_FILES["editarFoto"]["tmp_name"]);
+
+				if($mimeType == "image/jpeg"){
 
 					$random = mt_rand(100,999);
 					$path = "views/img/usuarios/".$_POST["editarUsuario"]."/".$random.".jpg";
 					$source = imagecreatefromjpeg($_FILES["editarFoto"]["tmp_name"]);
 					$destination = imagecreatetruecolor($newWidth, $newHeight);
 					imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-					imagejpeg($destination, $path);
+					imagejpeg($destination, $absDir."/".$random.".jpg");
 
 				}
 
-				if($_FILES["editarFoto"]["type"] == "image/png"){
+				if($mimeType == "image/png"){
 
 					$random = mt_rand(100,999);
 					$path = "views/img/usuarios/".$_POST["editarUsuario"]."/".$random.".png";
 					$source = imagecreatefrompng($_FILES["editarFoto"]["tmp_name"]);
 					$destination = imagecreatetruecolor($newWidth, $newHeight);
 					imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-					imagepng($destination, $path);
+					imagepng($destination, $absDir."/".$random.".png");
 
 				}
 
