@@ -4,7 +4,7 @@ class TemplateController{
 
 	static public function ctrTemplate(){
 
-		include "views/template.php";
+		include __DIR__ . "/../views/template.php";
 
 	}
 

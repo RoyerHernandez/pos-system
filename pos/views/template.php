@@ -2,6 +2,18 @@
 
 session_start();
 
+// Auto-expire session after 8 hours of inactivity
+$sessionTimeout = 8 * 60 * 60;
+if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] == "ok"){
+    if(isset($_SESSION["last_activity"]) && (time() - $_SESSION["last_activity"]) > $sessionTimeout){
+        session_unset();
+        session_destroy();
+        session_start();
+    } else {
+        $_SESSION["last_activity"] = time();
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -92,19 +104,28 @@ DOCUMENT BODY
     HEADER
     =============================================*/
 
-    include "modules/header.php";
+    include __DIR__ . "/modules/header.php";
 
     /*=============================================
     MENU
     =============================================*/
 
-    include "modules/menu.php";
+    include __DIR__ . "/modules/menu.php";
 
     /*=============================================
     CONTENT
     =============================================*/
 
-    if(isset($_GET["ruta"])){
+    // Resolve route from URL path directly (bypasses $_GET router dependency)
+    $requestPath = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+    $routeFromUrl = "";
+    if(preg_match('#^/([-a-zA-Z0-9]+)$#', $requestPath, $urlMatches)){
+      $routeFromUrl = $urlMatches[1];
+    }
+    // Fall back to $_GET["ruta"] if set (query string ?ruta=...)
+    $route = ($routeFromUrl !== "") ? $routeFromUrl : (isset($_GET["ruta"]) ? $_GET["ruta"] : "");
+
+    if($route !== ""){
 
       /*=============================================
       ROLE-BASED ACCESS CONTROL
@@ -121,7 +142,6 @@ DOCUMENT BODY
       // Routes for Admin only
       $adminOnly = array("usuarios", "categorias");
 
-      $route = $_GET["ruta"];
       $allowed = false;
 
       if(in_array($route, $allRoles)){
@@ -144,17 +164,17 @@ DOCUMENT BODY
 
       if($allowed){
 
-        include "modules/".$route.".php";
+        include __DIR__ . "/modules/" . $route . ".php";
 
       }else{
 
-        include "modules/403.php";
+        include __DIR__ . "/modules/403.php";
 
       }
 
     }else{
 
-      include "modules/inicio.php";
+      include __DIR__ . "/modules/inicio.php";
 
     }
 
@@ -162,13 +182,13 @@ DOCUMENT BODY
     FOOTER
     =============================================*/
 
-    include "modules/footer.php";
+    include __DIR__ . "/modules/footer.php";
 
     echo '</div>';
 
   }else{
 
-    include "modules/login.php";
+    include __DIR__ . "/modules/login.php";
 
   }
 
