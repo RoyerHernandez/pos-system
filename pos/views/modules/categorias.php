@@ -255,7 +255,7 @@ $(".tablas").on("click", ".btnEliminarCategoria", function(){
 
     if(result.value){
 
-      window.location = "categorias&idCategoria="+idCategoria;
+      window.location = "categorias?idCategoria="+idCategoria;
 
     }
 

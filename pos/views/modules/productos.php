@@ -469,7 +469,7 @@ $(".tablas").on("click", ".btnEliminarProducto", function(){
 
     if(result.value){
 
-      window.location = "productos&idProducto="+idProducto;
+      window.location = "productos?idProducto="+idProducto;
 
     }
 

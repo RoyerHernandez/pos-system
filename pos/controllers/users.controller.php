@@ -94,43 +94,32 @@ class UserController{
 					CREATE DIRECTORY TO STORE USER PHOTO
 					=============================================*/
 
-					$directory = "views/img/usuarios/".$_POST["nuevoUsuario"];
+					$absDir = __DIR__ . "/../views/img/usuarios/" . $_POST["nuevoUsuario"];
 
-					mkdir($directory, 0755);
+					if(!is_dir($absDir)){
+						mkdir($absDir, 0755, true);
+					}
 
 					/*=============================================
-					APPLY PHP IMAGE FUNCTIONS BASED ON TYPE
+					PROCESS IMAGE (any format supported by GD)
 					=============================================*/
 
-					if($_FILES["nuevaFoto"]["type"] == "image/jpeg"){
+					$source = @imagecreatefromstring(file_get_contents($_FILES["nuevaFoto"]["tmp_name"]));
+
+					if($source !== false){
 
 						$random = mt_rand(100,999);
 
 						$path = "views/img/usuarios/".$_POST["nuevoUsuario"]."/".$random.".jpg";
 
-						$source = imagecreatefromjpeg($_FILES["nuevaFoto"]["tmp_name"]);
-
 						$destination = imagecreatetruecolor($newWidth, $newHeight);
 
 						imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-						imagejpeg($destination, $path);
+						imagejpeg($destination, $absDir."/".$random.".jpg");
 
-					}
-
-					if($_FILES["nuevaFoto"]["type"] == "image/png"){
-
-						$random = mt_rand(100,999);
-
-						$path = "views/img/usuarios/".$_POST["nuevoUsuario"]."/".$random.".png";
-
-						$source = imagecreatefrompng($_FILES["nuevaFoto"]["tmp_name"]);
-
-						$destination = imagecreatetruecolor($newWidth, $newHeight);
-
-						imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-
-						imagepng($destination, $path);
+						imagedestroy($source);
+						imagedestroy($destination);
 
 					}
 
@@ -225,31 +214,32 @@ class UserController{
 				$newWidth = 500;
 				$newHeight = 500;
 
-				$directory = "views/img/usuarios/".$_POST["editarUsuario"];
+				$absDir = __DIR__ . "/../views/img/usuarios/" . $_POST["editarUsuario"];
 
-				if(!is_dir($directory)){
-					mkdir($directory, 0755);
+				if(!is_dir($absDir)){
+					mkdir($absDir, 0755, true);
 				}
 
-				if($_FILES["editarFoto"]["type"] == "image/jpeg"){
+				/*=============================================
+				PROCESS IMAGE (any format supported by GD)
+				=============================================*/
+
+				$source = @imagecreatefromstring(file_get_contents($_FILES["editarFoto"]["tmp_name"]));
+
+				if($source !== false){
 
 					$random = mt_rand(100,999);
+
 					$path = "views/img/usuarios/".$_POST["editarUsuario"]."/".$random.".jpg";
-					$source = imagecreatefromjpeg($_FILES["editarFoto"]["tmp_name"]);
+
 					$destination = imagecreatetruecolor($newWidth, $newHeight);
+
 					imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-					imagejpeg($destination, $path);
 
-				}
+					imagejpeg($destination, $absDir."/".$random.".jpg");
 
-				if($_FILES["editarFoto"]["type"] == "image/png"){
-
-					$random = mt_rand(100,999);
-					$path = "views/img/usuarios/".$_POST["editarUsuario"]."/".$random.".png";
-					$source = imagecreatefrompng($_FILES["editarFoto"]["tmp_name"]);
-					$destination = imagecreatetruecolor($newWidth, $newHeight);
-					imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-					imagepng($destination, $path);
+					imagedestroy($source);
+					imagedestroy($destination);
 
 				}
 
