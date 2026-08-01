@@ -1,6 +1,16 @@
 <?php
 
 session_start();
+// Extract route directly from REQUEST_URI (works regardless of how router sets it)
+$_uriPath = parse_url($_SERVER["REQUEST_URI"] ?? '/', PHP_URL_PATH);
+$appRoute = null;
+if(preg_match('#^/([-a-zA-Z0-9]+)$#', $_uriPath, $_uriMatches)){
+    $appRoute = $_uriMatches[1] !== 'index' ? $_uriMatches[1] : null;
+}
+// Also fallback to $_GET["ruta"] if available (router may still set it)
+if($appRoute === null && !empty($_GET["ruta"])){
+    $appRoute = $_GET["ruta"];
+}
 
 ?>
 
@@ -80,11 +90,13 @@ session_start();
 DOCUMENT BODY
 ======================================-->
 
-<body class="hold-transition skin-black sidebar-collapse sidebar-mini login-page">
+<?php $isLoggedIn = isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] == "ok"; ?>
+
+<body class="hold-transition skin-black <?php echo $isLoggedIn ? 'sidebar-collapse sidebar-mini' : 'login-page'; ?>">
 
   <?php
 
-  if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] == "ok"){
+  if($isLoggedIn){
 
    echo '<div class="wrapper">';
 
@@ -104,7 +116,7 @@ DOCUMENT BODY
     CONTENT
     =============================================*/
 
-    if(isset($_GET["ruta"])){
+    if(isset($appRoute)){
 
       /*=============================================
       ROLE-BASED ACCESS CONTROL
@@ -121,7 +133,7 @@ DOCUMENT BODY
       // Routes for Admin only
       $adminOnly = array("usuarios", "categorias");
 
-      $route = $_GET["ruta"];
+      $route = $appRoute;
       $allowed = false;
 
       if(in_array($route, $allRoles)){

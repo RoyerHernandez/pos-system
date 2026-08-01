@@ -371,7 +371,7 @@ $(".tablas").on("click", ".btnEliminarUsuario", function(){
 
     if(result.value){
 
-      window.location = "usuarios&idUsuario="+idUsuario;
+      window.location = "usuarios?idUsuario="+idUsuario;
 
     }
 
