@@ -263,6 +263,61 @@ func clientListFromDomain(clients []domain.Client) []ClientResponseDTO {
 }
 
 // ---------------------------------------------------------------------------
+// Table
+// ---------------------------------------------------------------------------
+
+// CreateTableDTO represents the create table request body.
+type CreateTableDTO struct {
+	Numero    int     `json:"numero"`
+	Nombre    *string `json:"nombre"`
+	Capacidad int     `json:"capacidad"`
+}
+
+// UpdateTableDTO represents the update table request body.
+type UpdateTableDTO struct {
+	Numero    int     `json:"numero"`
+	Nombre    *string `json:"nombre"`
+	Capacidad int     `json:"capacidad"`
+}
+
+// TableResponseDTO is the JSON representation of a table.
+type TableResponseDTO struct {
+	ID                 int        `json:"id"`
+	Numero             int        `json:"numero"`
+	Nombre             *string    `json:"nombre"`
+	Capacidad          int        `json:"capacidad"`
+	Estado             string     `json:"estado"`
+	IDVentaActiva      *int       `json:"id_venta_activa"`
+	IDMesero           *int       `json:"id_mesero"`
+	FechaCreacion      *time.Time `json:"fecha_creacion"`
+	FechaActualizacion *time.Time `json:"fecha_actualizacion"`
+}
+
+// tableResponseFromDomain converts domain.Table to a DTO.
+func tableResponseFromDomain(t domain.Table) TableResponseDTO {
+	return TableResponseDTO{
+		ID:                 t.ID,
+		Numero:             t.Numero,
+		Nombre:             t.Nombre,
+		Capacidad:          t.Capacidad,
+		Estado:             t.Estado,
+		IDVentaActiva:      t.IDVentaActiva,
+		IDMesero:           t.IDMesero,
+		FechaCreacion:      t.FechaCreacion,
+		FechaActualizacion: t.FechaActualizacion,
+	}
+}
+
+// tableListFromDomain converts a slice of domain.Table to DTOs.
+func tableListFromDomain(tables []domain.Table) []TableResponseDTO {
+	out := make([]TableResponseDTO, len(tables))
+	for i, t := range tables {
+		out[i] = tableResponseFromDomain(t)
+	}
+	return out
+}
+
+// ---------------------------------------------------------------------------
 // Sale
 // ---------------------------------------------------------------------------
 

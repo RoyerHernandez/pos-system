@@ -20,6 +20,7 @@ func mapURLs(
 	cash *web.CashRegisterController,
 	dashboard *web.DashboardController,
 	reports *web.ReportsController,
+	table *web.TableController,
 ) {
 	r.Route("/api/pos/v1", func(r chi.Router) {
 		// Public routes
@@ -90,6 +91,13 @@ func mapURLs(
 				r.Post("/categories", category.Create)
 				r.Put("/categories/{id}", category.Update)
 				r.Delete("/categories/{id}", category.Delete)
+
+				// Tables CRUD
+				r.Get("/tables", table.GetAll)
+				r.Get("/tables/{id}", table.GetByID)
+				r.Post("/tables", table.Create)
+				r.Put("/tables/{id}", table.Update)
+				r.Delete("/tables/{id}", table.Delete)
 
 				// Cancel sale
 				r.Put("/sales/{id}/cancel", sale.Cancel)
