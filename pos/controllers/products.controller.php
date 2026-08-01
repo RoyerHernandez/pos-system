@@ -146,6 +146,34 @@ class ProductController{
 
 		if(isset($_POST["editarCodigo"])){
 
+			$table = "productos";
+
+			/*=============================================
+			CHECK FOR DUPLICATE CODE
+			=============================================*/
+
+			$existing = ProductModel::mdlShowProducts($table, "codigo", $_POST["editarCodigo"]);
+
+			if($existing && $existing["id"] != $_POST["idProductoEditar"]){
+
+				echo '<script>
+
+				swal({
+
+					type: "error",
+					title: "¡Código duplicado!",
+					text: "El código ingresado ya está siendo utilizado por otro producto.",
+					showConfirmButton: true,
+					confirmButtonText: "Cerrar"
+
+				});
+
+				</script>';
+
+				return;
+
+			}
+
 			/*=============================================
 			VALIDATE IMAGE
 			=============================================*/
@@ -190,8 +218,6 @@ class ProductController{
 
 			}
 
-			$table = "productos";
-
 			$data = array("id" => $_POST["idProductoEditar"],
 				           "codigo" => $_POST["editarCodigo"],
 				           "codigo_barras" => $_POST["editarCodigoBarras"],
@@ -223,6 +249,22 @@ class ProductController{
 						window.location = "productos";
 
 					}
+
+				});
+
+				</script>';
+
+			}else{
+
+				echo '<script>
+
+				swal({
+
+					type: "error",
+					title: "¡Error al editar el producto!",
+					text: "No se pudo actualizar el producto. Inténtelo nuevamente.",
+					showConfirmButton: true,
+					confirmButtonText: "Cerrar"
 
 				});
 

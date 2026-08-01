@@ -324,7 +324,7 @@ EDIT PRODUCT MODAL
                     <div class="form-group">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-arrow-down"></i></span>
-                        <input type="number" class="form-control input-lg" name="editarPrecioCompra" id="editarPrecioCompra" step="0.01" min="0" required>
+                        <input type="number" class="form-control input-lg" name="editarPrecioCompra" id="editarPrecioCompra" step="0.01" min="0" placeholder="Precio compra" required>
                       </div>
                     </div>
                   </div>
@@ -333,7 +333,7 @@ EDIT PRODUCT MODAL
                     <div class="form-group">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-arrow-up"></i></span>
-                        <input type="number" class="form-control input-lg" name="editarPrecioVenta" id="editarPrecioVenta" step="0.01" min="0" required>
+                        <input type="number" class="form-control input-lg" name="editarPrecioVenta" id="editarPrecioVenta" step="0.01" min="0" placeholder="Precio venta" required>
                       </div>
                     </div>
                   </div>
@@ -347,7 +347,7 @@ EDIT PRODUCT MODAL
                     <div class="form-group">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-cubes"></i></span>
-                        <input type="number" class="form-control input-lg" name="editarStock" id="editarStock" min="0" required>
+                        <input type="number" class="form-control input-lg" name="editarStock" id="editarStock" min="0" placeholder="Stock" required>
                       </div>
                     </div>
                   </div>
@@ -356,7 +356,7 @@ EDIT PRODUCT MODAL
                     <div class="form-group">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-exclamation-triangle"></i></span>
-                        <input type="number" class="form-control input-lg" name="editarStockMinimo" id="editarStockMinimo" min="0" required>
+                        <input type="number" class="form-control input-lg" name="editarStockMinimo" id="editarStockMinimo" min="0" placeholder="Stock mínimo" required>
                       </div>
                     </div>
                   </div>
