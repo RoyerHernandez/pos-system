@@ -22,7 +22,7 @@ class ProductModel{
 
 		}else{
 
-			$stmt = Connection::connect()->prepare("SELECT p.*, c.nombre as categoria FROM $table p LEFT JOIN categorias c ON p.id_categoria = c.id ORDER BY p.id DESC");
+			$stmt = Connection::connect()->prepare("SELECT p.*, c.nombre as categoria FROM $table p LEFT JOIN categorias c ON p.id_categoria = c.id ORDER BY c.nombre ASC, p.codigo DESC");
 
 			$stmt -> execute();
 
