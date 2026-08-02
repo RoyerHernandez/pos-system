@@ -56,8 +56,9 @@ $categories = CategoryController::ctrShowCategories(null, null);
             <?php
 
             $counter = 1;
-
             foreach($products as $key => $value){
+
+              $catColor = 'label-cat-' . (($value["id_categoria"] - 1) % 6 + 1);
 
               echo '<tr>
 
@@ -65,7 +66,7 @@ $categories = CategoryController::ctrShowCategories(null, null);
                 <td><img src="'.(!empty($value["imagen"]) ? $value["imagen"] : 'views/img/productos/default/no-imagen-producto.svg').'" class="img-thumbnail" width="40px"></td>
                 <td>'.$value["codigo"].'</td>
                 <td>'.$value["descripcion"].'</td>
-                <td><span class="label label-info">'.$value["categoria"].'</span></td>
+                <td><span class="label '.$catColor.'">'.$value["categoria"].'</span></td>
                 <td>$'.number_format($value["precio_compra"], 2).'</td>
                 <td>$'.number_format($value["precio_venta"], 2).'</td>
                 <td>';
