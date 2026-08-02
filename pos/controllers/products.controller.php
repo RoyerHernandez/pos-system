@@ -86,6 +86,30 @@ class ProductController{
 
 				if($response == "ok"){
 
+					/*=============================================
+					LOG INITIAL STOCK AS INVENTORY ENTRY
+					=============================================*/
+
+					if(intval($_POST["nuevoStock"]) > 0){
+
+						$newProduct = ProductModel::mdlShowProducts($table, "codigo", $_POST["nuevoCodigo"]);
+
+						if($newProduct){
+
+							InventoryModel::mdlInsertMovement("movimientos_inventario", array(
+								"id_producto"   => $newProduct["id"],
+								"id_usuario"    => $_SESSION["id"],
+								"tipo"          => "entrada",
+								"motivo"        => "Compra",
+								"cantidad"      => intval($_POST["nuevoStock"]),
+								"observaciones" => "Stock inicial al crear el producto",
+								"id_referencia" => null
+							));
+
+						}
+
+					}
+
 					echo '<script>
 
 					swal({
