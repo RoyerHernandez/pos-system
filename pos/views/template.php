@@ -1,6 +1,28 @@
 <?php
 
 session_start();
+
+/*=============================================
+SESSION TIMEOUT — 2 minutes of inactivity
+=============================================*/
+
+define('SESSION_TIMEOUT', 120);
+
+if(isset($_SESSION['loggedIn']) && $_SESSION['loggedIn'] == 'ok'){
+
+    if(isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > SESSION_TIMEOUT){
+
+        session_unset();
+        session_destroy();
+
+    } else {
+
+        $_SESSION['last_activity'] = time();
+
+    }
+
+}
+
 // Extract route directly from REQUEST_URI (works regardless of how router sets it)
 $_uriPath = parse_url($_SERVER["REQUEST_URI"] ?? '/', PHP_URL_PATH);
 $appRoute = null;
