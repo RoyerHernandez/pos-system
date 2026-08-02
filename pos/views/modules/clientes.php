@@ -354,7 +354,7 @@ $(".tablas").on("click", ".btnEliminarCliente", function(){
 
     if(result.value){
 
-      window.location = "clientes&idCliente="+idCliente;
+      window.location = "clientes?idCliente="+idCliente;
 
     }
 
