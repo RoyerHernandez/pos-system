@@ -38,3 +38,7 @@ pos/extensiones/
 package-lock.json
 yarn.lock
 composer.lock
+
+# Go
+api/server
+api/tmp/

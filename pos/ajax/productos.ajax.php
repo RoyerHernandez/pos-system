@@ -16,7 +16,7 @@ GET PRODUCT BY ID (for edit modal)
 
 if(isset($_POST["idProducto"])){
 
-	$item = "p.id";
+	$item = "id";
 	$value = $_POST["idProducto"];
 
 	$response = ProductModel::mdlShowProducts("productos", $item, $value);

@@ -1,7 +1,7 @@
 <?php
 /*=============================================
 ROUTER FOR PHP BUILT-IN SERVER
-Usage: php -S localhost:8080 router.php
+Usage: php -S localhost:8000 router.php
 Replaces .htaccess mod_rewrite rules
 =============================================*/
 

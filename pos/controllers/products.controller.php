@@ -39,29 +39,32 @@ class ProductController{
 					$newWidth = 500;
 					$newHeight = 500;
 
-					$directory = "views/img/productos/".$_POST["nuevoCodigo"];
+					$absDir = __DIR__ . "/../views/img/productos/" . $_POST["nuevoCodigo"];
 
-					mkdir($directory, 0755);
-
-					if($_FILES["nuevaImagen"]["type"] == "image/jpeg"){
-
-						$random = mt_rand(100,999);
-						$path = "views/img/productos/".$_POST["nuevoCodigo"]."/".$random.".jpg";
-						$source = imagecreatefromjpeg($_FILES["nuevaImagen"]["tmp_name"]);
-						$destination = imagecreatetruecolor($newWidth, $newHeight);
-						imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-						imagejpeg($destination, $path);
-
+					if(!is_dir($absDir)){
+						mkdir($absDir, 0755, true);
 					}
 
-					if($_FILES["nuevaImagen"]["type"] == "image/png"){
+					/*=============================================
+					PROCESS IMAGE (any format supported by GD)
+					=============================================*/
+
+					$source = @imagecreatefromstring(file_get_contents($_FILES["nuevaImagen"]["tmp_name"]));
+
+					if($source !== false){
 
 						$random = mt_rand(100,999);
-						$path = "views/img/productos/".$_POST["nuevoCodigo"]."/".$random.".png";
-						$source = imagecreatefrompng($_FILES["nuevaImagen"]["tmp_name"]);
+
+						$path = "views/img/productos/".$_POST["nuevoCodigo"]."/".$random.".jpg";
+
 						$destination = imagecreatetruecolor($newWidth, $newHeight);
+
 						imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-						imagepng($destination, $path);
+
+						imagejpeg($destination, $absDir."/".$random.".jpg");
+
+						imagedestroy($source);
+						imagedestroy($destination);
 
 					}
 
@@ -143,6 +146,34 @@ class ProductController{
 
 		if(isset($_POST["editarCodigo"])){
 
+			$table = "productos";
+
+			/*=============================================
+			CHECK FOR DUPLICATE CODE
+			=============================================*/
+
+			$existing = ProductModel::mdlShowProducts($table, "codigo", $_POST["editarCodigo"]);
+
+			if($existing && $existing["id"] != $_POST["idProductoEditar"]){
+
+				echo '<script>
+
+				swal({
+
+					type: "error",
+					title: "¡Código duplicado!",
+					text: "El código ingresado ya está siendo utilizado por otro producto.",
+					showConfirmButton: true,
+					confirmButtonText: "Cerrar"
+
+				});
+
+				</script>';
+
+				return;
+
+			}
+
 			/*=============================================
 			VALIDATE IMAGE
 			=============================================*/
@@ -156,37 +187,36 @@ class ProductController{
 				$newWidth = 500;
 				$newHeight = 500;
 
-				$directory = "views/img/productos/".$_POST["editarCodigo"];
+				$absDir = __DIR__ . "/../views/img/productos/" . $_POST["editarCodigo"];
 
-				if(!is_dir($directory)){
-					mkdir($directory, 0755);
+				if(!is_dir($absDir)){
+					mkdir($absDir, 0755, true);
 				}
 
-				if($_FILES["editarImagen"]["type"] == "image/jpeg"){
+				/*=============================================
+				PROCESS IMAGE (any format supported by GD)
+				=============================================*/
+
+				$source = @imagecreatefromstring(file_get_contents($_FILES["editarImagen"]["tmp_name"]));
+
+				if($source !== false){
 
 					$random = mt_rand(100,999);
+
 					$path = "views/img/productos/".$_POST["editarCodigo"]."/".$random.".jpg";
-					$source = imagecreatefromjpeg($_FILES["editarImagen"]["tmp_name"]);
+
 					$destination = imagecreatetruecolor($newWidth, $newHeight);
+
 					imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-					imagejpeg($destination, $path);
 
-				}
+					imagejpeg($destination, $absDir."/".$random.".jpg");
 
-				if($_FILES["editarImagen"]["type"] == "image/png"){
-
-					$random = mt_rand(100,999);
-					$path = "views/img/productos/".$_POST["editarCodigo"]."/".$random.".png";
-					$source = imagecreatefrompng($_FILES["editarImagen"]["tmp_name"]);
-					$destination = imagecreatetruecolor($newWidth, $newHeight);
-					imagecopyresized($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-					imagepng($destination, $path);
+					imagedestroy($source);
+					imagedestroy($destination);
 
 				}
 
 			}
-
-			$table = "productos";
 
 			$data = array("id" => $_POST["idProductoEditar"],
 				           "codigo" => $_POST["editarCodigo"],
@@ -219,6 +249,22 @@ class ProductController{
 						window.location = "productos";
 
 					}
+
+				});
+
+				</script>';
+
+			}else{
+
+				echo '<script>
+
+				swal({
+
+					type: "error",
+					title: "¡Error al editar el producto!",
+					text: "No se pudo actualizar el producto. Inténtelo nuevamente.",
+					showConfirmButton: true,
+					confirmButtonText: "Cerrar"
 
 				});
 

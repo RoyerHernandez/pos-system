@@ -56,8 +56,9 @@ $categories = CategoryController::ctrShowCategories(null, null);
             <?php
 
             $counter = 1;
-
             foreach($products as $key => $value){
+
+              $catColor = 'label-cat-' . (($value["id_categoria"] - 1) % 6 + 1);
 
               echo '<tr>
 
@@ -65,7 +66,7 @@ $categories = CategoryController::ctrShowCategories(null, null);
                 <td><img src="'.(!empty($value["imagen"]) ? $value["imagen"] : 'views/img/productos/default/no-imagen-producto.svg').'" class="img-thumbnail" width="40px"></td>
                 <td>'.$value["codigo"].'</td>
                 <td>'.$value["descripcion"].'</td>
-                <td><span class="label label-info">'.$value["categoria"].'</span></td>
+                <td><span class="label '.$catColor.'">'.$value["categoria"].'</span></td>
                 <td>$'.number_format($value["precio_compra"], 2).'</td>
                 <td>$'.number_format($value["precio_venta"], 2).'</td>
                 <td>';
@@ -324,7 +325,7 @@ EDIT PRODUCT MODAL
                     <div class="form-group">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-arrow-down"></i></span>
-                        <input type="number" class="form-control input-lg" name="editarPrecioCompra" id="editarPrecioCompra" step="0.01" min="0" required>
+                        <input type="number" class="form-control input-lg" name="editarPrecioCompra" id="editarPrecioCompra" step="0.01" min="0" placeholder="Precio compra" required>
                       </div>
                     </div>
                   </div>
@@ -333,7 +334,7 @@ EDIT PRODUCT MODAL
                     <div class="form-group">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-arrow-up"></i></span>
-                        <input type="number" class="form-control input-lg" name="editarPrecioVenta" id="editarPrecioVenta" step="0.01" min="0" required>
+                        <input type="number" class="form-control input-lg" name="editarPrecioVenta" id="editarPrecioVenta" step="0.01" min="0" placeholder="Precio venta" required>
                       </div>
                     </div>
                   </div>
@@ -347,7 +348,7 @@ EDIT PRODUCT MODAL
                     <div class="form-group">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-cubes"></i></span>
-                        <input type="number" class="form-control input-lg" name="editarStock" id="editarStock" min="0" required>
+                        <input type="number" class="form-control input-lg" name="editarStock" id="editarStock" min="0" placeholder="Stock" required>
                       </div>
                     </div>
                   </div>
@@ -356,7 +357,7 @@ EDIT PRODUCT MODAL
                     <div class="form-group">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-exclamation-triangle"></i></span>
-                        <input type="number" class="form-control input-lg" name="editarStockMinimo" id="editarStockMinimo" min="0" required>
+                        <input type="number" class="form-control input-lg" name="editarStockMinimo" id="editarStockMinimo" min="0" placeholder="Stock mínimo" required>
                       </div>
                     </div>
                   </div>
@@ -469,7 +470,7 @@ $(".tablas").on("click", ".btnEliminarProducto", function(){
 
     if(result.value){
 
-      window.location = "productos&idProducto="+idProducto;
+      window.location = "productos?idProducto="+idProducto;
 
     }
 

@@ -10,6 +10,8 @@ Data Table
 
 $(".tablas").DataTable({
 
+	"pagingType": "simple_numbers",
+
 	"language": {
 
 		"sProcessing":     "Procesando...",
