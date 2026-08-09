@@ -126,6 +126,26 @@ func (r *CashRegisterRepository) BeginTx() (*sqlx.Tx, error) {
 	return tx, nil
 }
 
+// UpdateTotalsTx increments the running totals on a cash register within a transaction.
+func (r *CashRegisterRepository) UpdateTotalsTx(tx *sqlx.Tx, cajaID int, amount float64, metodoPago string) error {
+	query := "UPDATE caja SET total_ventas = total_ventas + ?"
+	switch metodoPago {
+	case "Efectivo":
+		query += ", total_efectivo = total_efectivo + ?"
+	case "Tarjeta":
+		query += ", total_tarjeta = total_tarjeta + ?"
+	case "Transferencia":
+		query += ", total_transferencia = total_transferencia + ?"
+	}
+	query += " WHERE id = ?"
+	_, err := tx.Exec(query, amount, amount, cajaID)
+	if err != nil {
+		log.Printf("repository - UpdateTotalsTx(cashregister): %v", err)
+		return errors.New("failed to update cash register totals")
+	}
+	return nil
+}
+
 func (r *CashRegisterRepository) Close(id int, montoCierre float64) error {
 	_, err := r.db.Exec(
 		"UPDATE caja SET estado = 'cerrada', monto_cierre = ?, fecha_cierre = NOW() WHERE id = ?",

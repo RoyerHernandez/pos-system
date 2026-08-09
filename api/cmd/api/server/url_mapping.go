@@ -18,6 +18,7 @@ func mapURLs(
 	sale *web.SaleController,
 	inventory *web.InventoryController,
 	cash *web.CashRegisterController,
+	table *web.TableController,
 	dashboard *web.DashboardController,
 	reports *web.ReportsController,
 ) {
@@ -36,6 +37,16 @@ func mapURLs(
 			r.Post("/cashregister/open", cash.Open)
 			r.Put("/cashregister/{id}/close", cash.Close)
 			r.Get("/cashregister/current", cash.GetCurrent)
+
+			// Tables - read access for all authenticated (waiters need table states)
+			r.Get("/tables", table.GetAll)
+			r.Get("/tables/{id}", table.GetByID)
+
+			// Table operations - available to all authenticated users (waiters)
+			r.Post("/tables/{id}/open", table.Open)
+			r.Post("/tables/{id}/items", table.AddItems)
+			r.Delete("/tables/{id}/items/{detail_id}", table.RemoveItem)
+			r.Put("/tables/{id}/close", table.Close)
 
 			// Admin + Especial
 			r.Group(func(r chi.Router) {
@@ -90,6 +101,11 @@ func mapURLs(
 				r.Post("/categories", category.Create)
 				r.Put("/categories/{id}", category.Update)
 				r.Delete("/categories/{id}", category.Delete)
+
+				// Tables write operations - admin only
+				r.Post("/tables", table.Create)
+				r.Put("/tables/{id}", table.Update)
+				r.Delete("/tables/{id}", table.Delete)
 
 				// Cancel sale
 				r.Put("/sales/{id}/cancel", sale.Cancel)
