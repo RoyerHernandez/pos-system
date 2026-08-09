@@ -121,3 +121,31 @@ func (r *TableRepository) ExistsByNumero(numero int, excludeID int) (bool, error
 	}
 	return count > 0, nil
 }
+
+// FindByIDForUpdate locks the row with SELECT ... FOR UPDATE within a transaction.
+func (r *TableRepository) FindByIDForUpdate(tx *sqlx.Tx, id int) (*domain.Table, error) {
+	var dao tableDAO
+	err := tx.Get(&dao, "SELECT * FROM mesas WHERE id = ? FOR UPDATE", id)
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, apperror.NotFoundError{Message: "table not found"}
+	}
+	if err != nil {
+		log.Printf("repository - FindByIDForUpdate(table): %v", err)
+		return nil, errors.New("failed to find table for update")
+	}
+	t := dao.toDomain()
+	return &t, nil
+}
+
+// UpdateState changes the estado, id_venta_activa and id_mesero of a table within a transaction.
+func (r *TableRepository) UpdateState(tx *sqlx.Tx, id int, estado string, idVenta *int, idMesero *int) error {
+	_, err := tx.Exec(
+		"UPDATE mesas SET estado = ?, id_venta_activa = ?, id_mesero = ?, fecha_actualizacion = NOW() WHERE id = ?",
+		estado, idVenta, idMesero, id,
+	)
+	if err != nil {
+		log.Printf("repository - UpdateState(table): %v", err)
+		return errors.New("failed to update table state")
+	}
+	return nil
+}

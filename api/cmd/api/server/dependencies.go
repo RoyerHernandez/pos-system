@@ -127,6 +127,18 @@ func resolveTableService(repo *repository.TableRepository) *service.TableService
 	return svc
 }
 
+func resolveTableOperationService(
+	db *sqlx.DB,
+	tableRepo *repository.TableRepository,
+	saleRepo *repository.SaleRepository,
+	inventoryRepo *repository.InventoryRepository,
+	cashRepo *repository.CashRegisterRepository,
+) *service.TableOperationService {
+	svc, err := service.NewTableOperationService(db, tableRepo, saleRepo, inventoryRepo, cashRepo)
+	panicOnError(err)
+	return svc
+}
+
 func resolveDashboardService(repo *repository.DashboardRepository) *service.DashboardService {
 	svc, err := service.NewDashboardService(repo)
 	panicOnError(err)
@@ -195,8 +207,8 @@ func resolveCashRegisterController(svc *service.CashRegisterService) *web.CashRe
 	return ctrl
 }
 
-func resolveTableController(svc *service.TableService) *web.TableController {
-	ctrl, err := web.NewTableController(svc)
+func resolveTableController(svc *service.TableService, ops *service.TableOperationService) *web.TableController {
+	ctrl, err := web.NewTableController(svc, ops)
 	panicOnError(err)
 	return ctrl
 }

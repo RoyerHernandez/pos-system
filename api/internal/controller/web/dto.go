@@ -280,6 +280,29 @@ type UpdateTableDTO struct {
 	Capacidad int     `json:"capacidad"`
 }
 
+// AddTableItemsDTO represents the body for POST /tables/{id}/items.
+type AddTableItemsDTO struct {
+	Items []TableItemLineDTO `json:"items"`
+}
+
+// TableItemLineDTO represents a single product-quantity pair.
+type TableItemLineDTO struct {
+	IDProducto int `json:"id_producto"`
+	Cantidad   int `json:"cantidad"`
+}
+
+// CloseTableDTO represents the body for PUT /tables/{id}/close.
+type CloseTableDTO struct {
+	MetodoPago string `json:"metodo_pago"`
+}
+
+// TableOrderResponseDTO is the JSON shape returned by table operation endpoints.
+type TableOrderResponseDTO struct {
+	Table   TableResponseDTO `json:"table"`
+	Sale    SaleDTO          `json:"sale"`
+	Details []SaleDetailDTO  `json:"details"`
+}
+
 // TableResponseDTO is the JSON representation of a table.
 type TableResponseDTO struct {
 	ID                 int        `json:"id"`

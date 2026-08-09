@@ -184,3 +184,54 @@ func (r *SaleRepository) FindDetailsBySaleIDTx(tx *sqlx.Tx, saleID int) ([]domai
 	}
 	return details, nil
 }
+
+// FindDetailByIDTx finds a single sale detail row by ID within a transaction.
+func (r *SaleRepository) FindDetailByIDTx(tx *sqlx.Tx, detailID int) (*domain.SaleDetail, error) {
+	var dao saleDetailDAO
+	err := tx.Get(&dao, "SELECT * FROM detalle_ventas WHERE id = ? FOR UPDATE", detailID)
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, apperror.NotFoundError{Message: "sale detail not found"}
+	}
+	if err != nil {
+		log.Printf("repository - FindDetailByIDTx: %v", err)
+		return nil, errors.New("failed to find sale detail")
+	}
+	d := dao.toDomain()
+	return &d, nil
+}
+
+// DeleteSaleDetailTx removes a detail row within a transaction.
+func (r *SaleRepository) DeleteSaleDetailTx(tx *sqlx.Tx, detailID int) error {
+	_, err := tx.Exec("DELETE FROM detalle_ventas WHERE id = ?", detailID)
+	if err != nil {
+		log.Printf("repository - DeleteSaleDetailTx: %v", err)
+		return errors.New("failed to delete sale detail")
+	}
+	return nil
+}
+
+// UpdateSaleTotals recalculates and persists subtotal and total for a sale within a transaction.
+func (r *SaleRepository) UpdateSaleTotals(tx *sqlx.Tx, saleID int, subtotal, total float64) error {
+	_, err := tx.Exec(
+		"UPDATE ventas SET subtotal = ?, total = ? WHERE id = ?",
+		subtotal, total, saleID,
+	)
+	if err != nil {
+		log.Printf("repository - UpdateSaleTotals: %v", err)
+		return errors.New("failed to update sale totals")
+	}
+	return nil
+}
+
+// UpdateSaleCompleted marks a sale as completada, setting metodo_pago and final totals within a transaction.
+func (r *SaleRepository) UpdateSaleCompleted(tx *sqlx.Tx, saleID int, metodoPago string, subtotal, total float64) error {
+	_, err := tx.Exec(
+		"UPDATE ventas SET estado = 'completada', metodo_pago = ?, subtotal = ?, total = ? WHERE id = ?",
+		metodoPago, subtotal, total, saleID,
+	)
+	if err != nil {
+		log.Printf("repository - UpdateSaleCompleted: %v", err)
+		return errors.New("failed to complete sale")
+	}
+	return nil
+}

@@ -42,6 +42,12 @@ func mapURLs(
 			r.Get("/tables", table.GetAll)
 			r.Get("/tables/{id}", table.GetByID)
 
+			// Table operations - available to all authenticated users (waiters)
+			r.Post("/tables/{id}/open", table.Open)
+			r.Post("/tables/{id}/items", table.AddItems)
+			r.Delete("/tables/{id}/items/{detail_id}", table.RemoveItem)
+			r.Put("/tables/{id}/close", table.Close)
+
 			// Admin + Especial
 			r.Group(func(r chi.Router) {
 				r.Use(middleware.RequireRole("Administrador", "Especial"))
