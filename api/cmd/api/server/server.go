@@ -138,9 +138,9 @@ func New() *Server {
 		saleCtrl,
 		inventoryCtrl,
 		cashCtrl,
+		tableCtrl,
 		dashCtrl,
 		reportsCtrl,
-		tableCtrl,
 	)
 
 	// HTTP server with timeouts
