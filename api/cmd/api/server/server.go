@@ -98,6 +98,7 @@ func New() *Server {
 	saleRepo := resolveSaleRepository(db)
 	inventoryRepo := resolveInventoryRepository(db)
 	cashRepo := resolveCashRegisterRepository(db)
+	tableRepo := resolveTableRepository(db)
 	dashRepo := resolveDashboardRepository(db)
 	reportsRepo := resolveReportsRepository(db)
 
@@ -109,6 +110,7 @@ func New() *Server {
 	saleSvc := resolveSaleService(db, saleRepo, inventoryRepo)
 	inventorySvc := resolveInventoryService(inventoryRepo, db)
 	cashSvc := resolveCashRegisterService(cashRepo, db)
+	tableSvc := resolveTableService(tableRepo)
 	dashSvc := resolveDashboardService(dashRepo)
 	reportsSvc := resolveReportsService(reportsRepo)
 
@@ -121,6 +123,7 @@ func New() *Server {
 	saleCtrl := resolveSaleController(saleSvc)
 	inventoryCtrl := resolveInventoryController(inventorySvc)
 	cashCtrl := resolveCashRegisterController(cashSvc)
+	tableCtrl := resolveTableController(tableSvc)
 	dashCtrl := resolveDashboardController(dashSvc)
 	reportsCtrl := resolveReportsController(reportsSvc)
 
@@ -135,6 +138,7 @@ func New() *Server {
 		saleCtrl,
 		inventoryCtrl,
 		cashCtrl,
+		tableCtrl,
 		dashCtrl,
 		reportsCtrl,
 	)

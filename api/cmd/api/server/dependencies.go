@@ -53,6 +53,12 @@ func resolveCashRegisterRepository(db *sqlx.DB) *repository.CashRegisterReposito
 	return repo
 }
 
+func resolveTableRepository(db *sqlx.DB) *repository.TableRepository {
+	repo, err := repository.NewTableRepository(db)
+	panicOnError(err)
+	return repo
+}
+
 func resolveDashboardRepository(db *sqlx.DB) *repository.DashboardRepository {
 	repo, err := repository.NewDashboardRepository(db)
 	panicOnError(err)
@@ -111,6 +117,12 @@ func resolveInventoryService(repo *repository.InventoryRepository, db *sqlx.DB) 
 
 func resolveCashRegisterService(repo *repository.CashRegisterRepository, db *sqlx.DB) *service.CashRegisterService {
 	svc, err := service.NewCashRegisterService(repo, db)
+	panicOnError(err)
+	return svc
+}
+
+func resolveTableService(repo *repository.TableRepository) *service.TableService {
+	svc, err := service.NewTableService(repo)
 	panicOnError(err)
 	return svc
 }
@@ -179,6 +191,12 @@ func resolveInventoryController(svc *service.InventoryService) *web.InventoryCon
 
 func resolveCashRegisterController(svc *service.CashRegisterService) *web.CashRegisterController {
 	ctrl, err := web.NewCashRegisterController(svc)
+	panicOnError(err)
+	return ctrl
+}
+
+func resolveTableController(svc *service.TableService) *web.TableController {
+	ctrl, err := web.NewTableController(svc)
 	panicOnError(err)
 	return ctrl
 }

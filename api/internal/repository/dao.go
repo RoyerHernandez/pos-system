@@ -67,6 +67,7 @@ type saleDAO struct {
 	Estado      string     `db:"estado"`
 	Fecha       *time.Time `db:"fecha"`
 	IDCaja      *int       `db:"id_caja"`
+	IDMesa      *int       `db:"id_mesa"`
 }
 
 func (d *saleDAO) toDomain() domain.Sale {
@@ -83,6 +84,7 @@ func (d *saleDAO) toDomain() domain.Sale {
 		Estado:      d.Estado,
 		Fecha:       d.Fecha,
 		IDCaja:      d.IDCaja,
+		IDMesa:      d.IDMesa,
 	}
 }
 
@@ -100,6 +102,51 @@ func toSaleDAO(s domain.Sale) saleDAO {
 		Estado:      s.Estado,
 		Fecha:       s.Fecha,
 		IDCaja:      s.IDCaja,
+		IDMesa:      s.IDMesa,
+	}
+}
+
+// ---------------------------------------------------------------------------
+// tableDAO
+// ---------------------------------------------------------------------------
+
+type tableDAO struct {
+	ID                 int        `db:"id"`
+	Numero             int        `db:"numero"`
+	Nombre             *string    `db:"nombre"`
+	Capacidad          int        `db:"capacidad"`
+	Estado             string     `db:"estado"`
+	IDVentaActiva      *int       `db:"id_venta_activa"`
+	IDMesero           *int       `db:"id_mesero"`
+	FechaCreacion      *time.Time `db:"fecha_creacion"`
+	FechaActualizacion *time.Time `db:"fecha_actualizacion"`
+}
+
+func (d *tableDAO) toDomain() domain.Table {
+	return domain.Table{
+		ID:                 d.ID,
+		Numero:             d.Numero,
+		Nombre:             d.Nombre,
+		Capacidad:          d.Capacidad,
+		Estado:             d.Estado,
+		IDVentaActiva:      d.IDVentaActiva,
+		IDMesero:           d.IDMesero,
+		FechaCreacion:      d.FechaCreacion,
+		FechaActualizacion: d.FechaActualizacion,
+	}
+}
+
+func toTableDAO(t domain.Table) tableDAO {
+	return tableDAO{
+		ID:                 t.ID,
+		Numero:             t.Numero,
+		Nombre:             t.Nombre,
+		Capacidad:          t.Capacidad,
+		Estado:             t.Estado,
+		IDVentaActiva:      t.IDVentaActiva,
+		IDMesero:           t.IDMesero,
+		FechaCreacion:      t.FechaCreacion,
+		FechaActualizacion: t.FechaActualizacion,
 	}
 }
 
